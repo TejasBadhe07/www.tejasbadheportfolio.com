@@ -44,7 +44,7 @@ const data = [
     demo: "https://dribbble.com/shots/20111240-Orion-UI-kit-for-Figma"
   },
 
-  /*{
+  {
     id: 5,
     image: IMG5,
     title: 'Figma dashboard UI kit for data design web apps',
@@ -58,7 +58,9 @@ const data = [
     title: 'Figma dashboard UI kit for data design web apps',
     github: 'https://github.com',
     demo: "https://dribbble.com/shots/19838794-Eclipse-Figma-dashboard-UI-kit-for-data-design-web-apps"
-  },*/
+  }
+  
+  /**/
 ]
 
 
