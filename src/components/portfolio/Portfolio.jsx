@@ -52,6 +52,7 @@ const data = [
     demo: "https://dribbble.com/shots/19886945-Eclipse-Figma-dashboard-UI-kit-for-data-design-web-apps"
   },
 
+  /*
   {
     id: 6,
     image: IMG6,
@@ -60,7 +61,7 @@ const data = [
     demo: "https://dribbble.com/shots/19838794-Eclipse-Figma-dashboard-UI-kit-for-data-design-web-apps"
   }
   
-  /**/
+  */
 ]
 
 
