@@ -43,7 +43,7 @@ const data = [
     github: 'https://github.com/TejasBadhe07/CNN-for-Image-Classification',
     demo: "https://dribbble.com/shots/20111240-Orion-UI-kit-for-Figma"
   },
-
+  /*
   {
     id: 5,
     image: IMG5,
@@ -52,7 +52,7 @@ const data = [
     demo: "https://dribbble.com/shots/19886945-Eclipse-Figma-dashboard-UI-kit-for-data-design-web-apps"
   },
 
-  /*
+
   {
     id: 6,
     image: IMG6,
