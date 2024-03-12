@@ -11,6 +11,7 @@ const Nav = () => {
   const [activeNav, setActiveNav] = useState('#')
   return (
     <nav>
+      
       {/*==========================================  ACTIVE TAGS  =========================================*/}
       <a href="#" onClick={() =>setActiveNav('#')} className={activeNav === '#' ? 'active' : ''}><AiOutlineHome/></a>
       <a href="#about" onClick={() =>setActiveNav('about')} className={activeNav === 'about' ? 'active' : ''}><AiOutlineUser/></a>
