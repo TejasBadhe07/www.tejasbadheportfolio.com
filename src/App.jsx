@@ -12,7 +12,7 @@ import Footer from './components/footer/Footer';
 
 const App = () => {
   // Set a variable to determine if the site is under maintenance
-  const isUnderMaintenance = 1; // Set to 1 to show the website, 0 to show maintenance message
+  const isUnderMaintenance = 0; // Set to 1 to show the website, 0 to show maintenance message
 
   return (
     <>
