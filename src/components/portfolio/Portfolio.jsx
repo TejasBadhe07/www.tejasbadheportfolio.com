@@ -4,8 +4,7 @@ import IMG1 from '../../assets/images/portfolio_images/library_management_system
 import IMG2 from '../../assets/images/portfolio_images/object_detection_car2.jpg'
 import IMG3 from '../../assets/images/portfolio_images/handwriting_digit_recognition.jpg'
 import IMG4 from '../../assets/images/portfolio_images/image_classification.png'
-// eslint-disable-next-line
-import IMG5 from '../../assets/images/portfolio_images/portfolio5.jpg'
+import IMG5 from '../../assets/images/portfolio_images/responsive-web-designs.jpg'
 // eslint-disable-next-line
 import IMG6 from '../../assets/images/portfolio_images/portfolio6.jpg'
 
@@ -41,19 +40,19 @@ const data = [
     image: IMG4,
     title: 'CNN for Image Classification',
     github: 'https://github.com/TejasBadhe07/CNN-for-Image-Classification',
-    demo: "https://dribbble.com/shots/20111240-Orion-UI-kit-for-Figma"
+    /*demo: "https://dribbble.com/shots/20111240-Orion-UI-kit-for-Figma"*/
   },
-  /*
+  
   {
     id: 5,
     image: IMG5,
-    title: 'Figma dashboard UI kit for data design web apps',
-    github: 'https://github.com',
-    demo: "https://dribbble.com/shots/19886945-Eclipse-Figma-dashboard-UI-kit-for-data-design-web-apps"
+    title: 'Collection of Responsive Web Designs',
+    github: 'https://github.com/TejasBadhe07/Responsive-Web-Design',
+    /*demo: "https://dribbble.com/shots/19886945-Eclipse-Figma-dashboard-UI-kit-for-data-design-web-apps"*/
   },
 
 
-  {
+  /*{
     id: 6,
     image: IMG6,
     title: 'Figma dashboard UI kit for data design web apps',
