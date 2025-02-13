@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.8e9ea417.css",
+    "main.js": "/static/js/main.5b563def.js",
+    "static/media/portfolio6.jpg": "/static/media/portfolio6.dc25f219b8e797fec7ee.jpg",
+    "static/media/resume.pdf": "/static/media/resume.61885a47106ac18d2d2c.pdf",
+    "static/media/background_texture_2.jpg": "/static/media/background_texture_2.b5f681fd02b14420b3fa.jpg",
+    "static/media/image_classification.png": "/static/media/image_classification.ebfece5bf07b1557dafd.png",
+    "static/media/library_management_system.jpg": "/static/media/library_management_system.f30a331248494b41cba5.jpg",
+    "static/media/responsive-web-designs.jpg": "/static/media/responsive-web-designs.31bafd6d892fd1c511f7.jpg",
+    "static/media/Tejas.jpeg": "/static/media/Tejas.94036fb2dca97cbd42b6.jpeg",
+    "static/media/handwriting_digit_recognition.jpg": "/static/media/handwriting_digit_recognition.4f3613451bc698590e8f.jpg",
+    "static/media/Photo1_.jpeg": "/static/media/Photo1_.a5a50412bc47024a687f.jpeg",
+    "static/media/object_detection_car2.jpg": "/static/media/object_detection_car2.ad3499efcf175ede0814.jpg",
+    "index.html": "/index.html",
+    "main.8e9ea417.css.map": "/static/css/main.8e9ea417.css.map",
+    "main.5b563def.js.map": "/static/js/main.5b563def.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8e9ea417.css",
+    "static/js/main.5b563def.js"
+  ]
+}
