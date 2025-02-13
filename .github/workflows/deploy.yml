@@ -1,0 +1,28 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Check Build Directory Contents
+        run: ls -l ./build # Or ./dist, adjust if your build folder is different
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build # Or the correct path!
+          cname: www.tejasbadheportfolio.com
