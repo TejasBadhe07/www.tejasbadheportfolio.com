@@ -1,5 +1,5 @@
-nav {
-    background: rgba(0, 0, 0, 0.3);
+.nav {
+    background: var(--color-bg-overlay);
     width: max-content;
     display: block;
     padding: 0.7rem 1.7rem;
@@ -12,22 +12,68 @@ nav {
     gap: 0.8rem;
     border-radius: 3rem;
     backdrop-filter: blur(15px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
 }
 
-nav a {
+.nav.scrolled {
+    background: var(--color-bg);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.nav a {
     background: transparent;
     padding: 0.9rem;
     border-radius: 50%;
-    display: flex;
     color: var(--color-light);
     font-size: 1.1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-nav a:hover {
-    background: rgba(0, 0, 0, 0.3);
+.nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.3s ease;
+    opacity: 0.2;
 }
 
-nav a.active {
-    background-color: var(--color-primary);
+.nav a:hover {
+    color: var(--color-white);
+}
+
+.nav a:hover::before {
+    transform: scale(1);
+}
+
+.nav a.active {
+    background: var(--color-primary);
     color: var(--color-bg);
+    box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+}
+
+.nav a.active::before {
+    display: none;
+}
+
+/* ==================================== MEDIA QUERIES (SMALL DEVICE) ===================================================== */
+@media screen and (max-width:600px) {
+    .nav {
+        padding: 0.7rem 1.2rem;
+        bottom: 1.5rem;
+    }
+
+    .nav a {
+        padding: 0.7rem;
+        font-size: 1rem;
+    }
 }

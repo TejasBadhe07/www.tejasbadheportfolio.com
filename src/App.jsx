@@ -1,42 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/header/Header';
 import Nav from './components/nav/Nav';
 import About from './components/about/About';
 import Experience from './components/experience/Experience';
-import Services from './components/services/Services';
+import Skills from './components/skills/Skills';
 import Portfolio from './components/portfolio/Portfolio';
-// eslint-disable-next-line
 import Testimonials from './components/testimonials/Testimonials';
 import Contact from './components/contact/Contact';
 import Footer from './components/footer/Footer';
+import { ThemeProvider } from './context/ThemeContext';
+import Loading from './components/loading/Loading';
+import ScrollProgress from './components/scrollProgress/ScrollProgress';
 
 const App = () => {
-  // Set a variable to determine if the site is under maintenance
-  const isUnderMaintenance = 1; // Set to 1 to show the website, 0 to show maintenance message
+  const [isLoading, setIsLoading] = useState(true);
+  const [showScrollProgress, setShowScrollProgress] = useState(false);
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    // Show scroll progress after scrolling
+    const handleScroll = () => {
+      setShowScrollProgress(window.scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
-    <>
-      {isUnderMaintenance === 0 ? (
-        <div style={{ textAlign: 'center', padding: '50px' }}>
-          <h1>Site Under Maintenance</h1>
-          <p>We're currently performing some updates.</p>
-          <p>Please check back later!</p> 
-          <p>Hello Tejas..!!!</p>
-        </div>
+    <ThemeProvider>
+      {isLoading ? (
+        <Loading />
       ) : (
         <>
+          <ScrollProgress className={showScrollProgress ? 'visible' : ''} />
           <Header />
           <Nav />
           <About />
           <Experience />
-          <Services />
+          <Skills />
           <Portfolio />
           {/*<Testimonials /> */}
           <Contact />
           <Footer />
         </>
       )}
-    </>
+    </ThemeProvider>
   );
 };
 
