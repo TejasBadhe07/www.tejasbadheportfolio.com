@@ -1,9 +1,8 @@
 import React from 'react'
 import './about.css'
 import ME from '../../assets/images/me-about.jpg'
+// eslint-disable-next-line
 import {FaAward, FaCode, FaGraduationCap} from 'react-icons/fa'
-import {FiUsers} from 'react-icons/fi'
-import {VscFolderLibrary} from 'react-icons/vsc'
 import {BiCodeAlt} from 'react-icons/bi'
 
 
@@ -29,11 +28,11 @@ const About = () => {
         </div>
 
         <div className='about__content'>
-          <div className="about__cards">
+          {/* <div className="about__cards">
             <article className='about__card'>
               <FaAward className='about__icon'/>
               <h5>Experience</h5>
-              <small>1.5+ Years</small>
+              <small>2.0+ Years</small>
               <div className='card-details'>
                 <span>Software Development</span>
                 <span>AI/ML Projects</span>
@@ -46,7 +45,6 @@ const About = () => {
               <small>Bachelor's of Computer Engineering</small>
               <div className='card-details'>
                 <span>Computer Engineering</span>
-                <span>AI/ML Specialization</span>
               </div>
             </article>
 
@@ -59,19 +57,20 @@ const About = () => {
                 <span>TensorFlow, Keras</span>
               </div>
             </article>
-          </div>
+          </div> */}
 
           <div className='about__text'>
-            <p>
-              I'm a passionate Full Stack Developer and AI/ML enthusiast with a strong foundation in creating innovative solutions. 
-              My journey in technology has equipped me with expertise in both frontend and backend development, along with advanced 
-              knowledge in machine learning and artificial intelligence.
-            </p>
-            <p>
-              With 1.5+ years of experience, I've worked on diverse projects ranging from web applications to AI-powered solutions. 
-              My technical stack includes React, Python, TensorFlow, and various modern web technologies. I'm particularly interested 
-              in developing intelligent systems and creating seamless user experiences.
-            </p>
+          <p>
+            I’m Tejas Badhe, a software developer with expertise in Python, Flask, React, HTML, CSS, and JavaScript. 
+            I specialize in building scalable backend systems, designing RESTful APIs, and deploying applications using 
+            AWS, Render, and CI/CD pipelines.
+          </p>
+          <p>
+            My skill set also includes machine learning with TensorFlow, data analysis with Pandas and NumPy, and 
+            computer vision using OpenCV. With a strong foundation in version control (Git, npm) and deployment 
+            automation, I focus on creating efficient, secure, and maintainable solutions.
+          </p>
+
             <div className='about__cta'>
               <a href="#contact" className='btn btn-primary'>Let's Talk</a>
               <a href="#portfolio" className='btn btn-secondary'>View My Work</a>

@@ -5,34 +5,36 @@ import { BsCalendarCheck } from 'react-icons/bs'
 
 const experienceData = [
   {
-    id: 1,
-    title: "Software Developer",
-    company: "Tech Company",
-    location: "Mumbai, India",
-    period: "Jan 2023 - Present",
-    type: "work",
-    description: "Working on full-stack development projects using React, Node.js, and Python. Developing and maintaining web applications with modern technologies.",
-    achievements: [
-      "Led the development of a new feature that increased user engagement by 40%",
-      "Implemented automated testing reducing bug reports by 25%",
-      "Mentored junior developers and conducted code reviews"
+    "id": 1,
+    "title": "Software Developer",
+    "company": "SCI-COM SOFTWARE INDIA PRIVATE LIMITED",
+    "location": "Pune, India",
+    "period": "Jan 2025 - Present & May 2023 - September 2023",
+    "type": "work",
+    "description": "Developing and maintaining full-stack applications, integrating machine learning models, and optimizing data pipelines for enhanced performance.",
+    "achievements": [
+      "Conducted in-depth data analysis using Pandas and NumPy, extracting key insights from diverse datasets.",
+      "Developed end-to-end machine learning platforms with Python and TensorFlow, covering data preparation, prototyping, and deployment.",
+      "Applied advanced data visualization techniques using Matplotlib and Seaborn to enhance model interpretability.",
+      "Optimized machine learning models with TensorFlow, incorporating the latest industry advancements for performance improvements."
     ],
-    technologies: ["React", "Node.js", "Python", "MongoDB", "AWS"]
+    "technologies": ["Python", "TensorFlow", "React", "Node.js", "MongoDB", "AWS", "Pandas", "NumPy", "Matplotlib", "Seaborn"]
   },
   {
-    id: 2,
-    title: "Machine Learning Intern",
-    company: "AI Solutions",
-    location: "Bangalore, India",
-    period: "Jun 2022 - Dec 2022",
-    type: "work",
-    description: "Worked on developing and optimizing machine learning models for computer vision applications.",
-    achievements: [
-      "Developed a custom CNN model achieving 95% accuracy",
-      "Optimized model inference time by 30%",
-      "Created automated data preprocessing pipeline"
+    "id": 2,
+    "title": "Software Developer Intern",
+    "company": "Anyu Biomedical LLP",
+    "location": "Pune, India",
+    "period": "Oct 2022 - May 2023",
+    "type": "work",
+    "description": "Conducted in-depth analysis of time series data and developed machine learning models for computer vision applications.",
+    "achievements": [
+      "Performed advanced statistical analysis and visualizations using Matplotlib and Seaborn.",
+      "Engineered image data from time series data using OpenCV (CV2) for ML applications.",
+      "Developed and optimized predictive models with TensorFlow and Keras, improving accuracy and efficiency.",
+      "Handled end-to-end machine learning workflows, including data preprocessing, feature engineering, training, validation, and deployment."
     ],
-    technologies: ["Python", "TensorFlow", "OpenCV", "PyTorch"]
+    "technologies": ["Python", "TensorFlow", "OpenCV", "PyTorch", "Keras", "Matplotlib", "Seaborn"]
   },
   {
     id: 3,

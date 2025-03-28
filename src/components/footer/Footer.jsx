@@ -22,7 +22,7 @@ const Footer = () => {
       </ul>
 
       <div className='footer__socials'>
-        <a href="https://m.facebook.com/tejas.badhe.756/" target='_blank' rel="noopener noreferrer">
+        <a href="https://m.facebook.com/tejas.badhe.756/e" target='_blank' rel="noopener noreferrer">
             <FaFacebookF />
         </a>
         <a href="https://x.com/TejasBadhe07" target='_blank' rel="noopener noreferrer">
