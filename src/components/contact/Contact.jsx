@@ -60,14 +60,14 @@ const Contact = () => {
             <a href="https://api.whatsapp.com/send?phone=+917719063683" target='_blank' rel="noreferrer">Send a Message</a>
           </article>
 
-          <div className='contact__social'>
+          {/* <div className='contact__social'>
             <a href="https://linkedin.com/in/your-profile" target='_blank' rel="noreferrer">
               <FaLinkedin className='social-icon' />
             </a>
             <a href="https://github.com/your-username" target='_blank' rel="noreferrer">
               <FaGithub className='social-icon' />
             </a>
-          </div>
+          </div> */}
         </div>
 
         <form ref={form} onSubmit={sendEmail} className='contact__form'>

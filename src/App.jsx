@@ -5,6 +5,7 @@ import About from './components/about/About';
 import Experience from './components/experience/Experience';
 import Skills from './components/skills/Skills';
 import Portfolio from './components/portfolio/Portfolio';
+// eslint-disable-next-line
 import Testimonials from './components/testimonials/Testimonials';
 import Contact from './components/contact/Contact';
 import Footer from './components/footer/Footer';
