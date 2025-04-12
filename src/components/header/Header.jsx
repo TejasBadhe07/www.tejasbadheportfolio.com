@@ -27,7 +27,7 @@ const Header = () => {
             <span className="highlight">Tejas</span>
             <span className="wave">👋</span>
           </h1>
-          <h5 className="header__subtitle text-light">Fullstack Developer</h5>
+          <h5 className="header__subtitle text-light">Software Developer</h5>
           <p className="header__description">
             Passionate about creating innovative solutions with modern web technologies
           </p>
@@ -45,7 +45,7 @@ const Header = () => {
             <img src={ME} alt="me" />
             <div className="me__overlay">
               <div className="me__overlay-content">
-                <span>Full Stack Developer</span>
+                <span>Software Developer</span>
                 <span>AI/ML Enthusiast</span>
               </div>
             </div>
