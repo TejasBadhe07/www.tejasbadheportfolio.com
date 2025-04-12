@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import './header.css'
 import CTA from './CTA'
 import ME from '../../assets/images/Photo1.jpeg'
-import HeaderSocials from './HeaderSocials'
 import { FaArrowDown } from 'react-icons/fa'
 import { motion } from 'framer-motion'
+import TopSocials from './TopSocials'
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -15,6 +15,7 @@ const Header = () => {
 
   return (
     <header>
+      <TopSocials />
       <div className="container header__container">
         <motion.div 
           className="header__content"
@@ -31,7 +32,6 @@ const Header = () => {
           <p className="header__description">
             Passionate about creating innovative solutions with modern web technologies
           </p>
-          <HeaderSocials />
           <CTA />
         </motion.div>
 

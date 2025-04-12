@@ -13,6 +13,7 @@
     place-items: center;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .about__me::before {
@@ -40,7 +41,9 @@
     transform: rotate(10deg);
     transition: var(--transition);
     position: relative;
-    box-shadow: 0 0 20px rgba(100, 255, 218, 0.1);
+    box-shadow: 0 5px 15px rgba(100, 255, 218, 0.2);
+    width: 95%;
+    height: 95%;
 }
 
 .about__me-image img {
@@ -48,14 +51,15 @@
     height: 100%;
     object-fit: cover;
     transition: var(--transition);
+    backface-visibility: hidden;
 }
 
 .about__me-image:hover {
-    transform: rotate(0) scale(1.05);
+    transform: rotate(0) scale(1.02);
 }
 
 .about__me-image:hover img {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .about__me-overlay {
@@ -66,15 +70,15 @@
     height: 100%;
     background: linear-gradient(
         to bottom,
-        rgba(10, 25, 47, 0.8),
-        rgba(10, 25, 47, 0.9)
+        rgba(10, 25, 47, 0.7),
+        rgba(10, 25, 47, 0.8)
     );
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: var(--transition);
-    backdrop-filter: blur(5px);
+    transition: all 0.4s ease;
+    backdrop-filter: blur(3px);
 }
 
 .about__me-image:hover .about__me-overlay {
@@ -86,7 +90,8 @@
     color: var(--color-white);
     transform: translateY(20px);
     opacity: 0;
-    transition: var(--transition);
+    transition: all 0.3s ease;
+    padding: 0 1rem;
 }
 
 .about__me-image:hover .about__me-overlay-content {
@@ -95,14 +100,14 @@
 }
 
 .overlay-icon {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     color: var(--color-primary);
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     animation: pulse 2s infinite;
 }
 
 .about__me-overlay-content span {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 500;
     display: block;
     margin-top: 0.5rem;
@@ -145,6 +150,7 @@
     transition: var(--transition);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .about__card::before {
@@ -166,7 +172,7 @@
 }
 
 .about__card:hover::before {
-    opacity: 1;
+    opacity: 0.5;
 }
 
 .about__icon {
@@ -226,11 +232,12 @@
 @media screen and (max-width:1024px) {
     .about__container {
         grid-template-columns: 1fr;
-        gap: 0;
+        gap: 2rem;
+        padding: 0 2rem;
     }
 
     .about__me {
-        width: 50%;
+        width: 60%;
         margin: 2rem auto 4rem;
     }
 
@@ -242,24 +249,38 @@
 /* ==================================== MEDIA QUERIES (SMALL DEVICE) ===================================================== */
 @media screen and (max-width: 600px) {
     .about__me {
-        width: 65%;
+        width: 85%;
         margin: 0 auto 3rem;
+        aspect-ratio: 4/5;
+    }
+
+    .about__me-image {
+        transform: rotate(0);
+        width: 100%;
+        height: 100%;
+    }
+
+    .about__me-overlay-content span {
+        font-size: 0.9rem;
     }
 
     .about__cards {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
 
     .about__content {
         text-align: center;
+        padding: 0 1rem;
     }
 
     .about__text p {
         margin: 1.5rem 0;
+        font-size: 0.9rem;
     }
 
     .about__cta {
         justify-content: center;
+        flex-wrap: wrap;
     }
 }
