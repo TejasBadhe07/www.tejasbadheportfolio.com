@@ -65,23 +65,6 @@
     display: none;
 }
 
-.nav__socials {
-    display: flex;
-    gap: 0.8rem;
-    margin-left: 0.8rem;
-    padding-left: 0.8rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.nav__socials a {
-    color: var(--color-primary);
-    font-size: 1.2rem;
-}
-
-.nav__socials a:hover {
-    color: var(--color-white);
-}
-
 /* ==================================== MEDIA QUERIES (SMALL DEVICE) ===================================================== */
 @media screen and (max-width:600px) {
     .nav {
@@ -92,10 +75,6 @@
     .nav a {
         padding: 0.7rem;
         font-size: 1rem;
-    }
-
-    .nav__socials {
-        display: none;
     }
 }
 
