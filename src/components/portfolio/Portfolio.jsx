@@ -94,7 +94,7 @@ const data = [
     image: IMG5,
     title: 'Content Creator Streamline Process Website',
     description: 'A web application designed to help content creators streamline their workflow and manage their content creation process efficiently.',
-    technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
+    technologies: ['HTML', 'CSS', 'JavaScript'],
     category: 'Web Development',
     github: 'https://github.com/TejasBadhe07/CreatorStudio',
     demo: "https://content-creator-studio.vercel.app/",
