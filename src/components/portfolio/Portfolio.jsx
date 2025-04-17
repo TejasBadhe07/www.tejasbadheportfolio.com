@@ -5,7 +5,7 @@ import IMG1 from '../../assets/images/portfolio_images/library_management_system
 import IMG2 from '../../assets/images/portfolio_images/object_detection_car2.jpg'
 import IMG3 from '../../assets/images/portfolio_images/handwriting_digit_recognition.jpg'
 import IMG4 from '../../assets/images/portfolio_images/image_classification.png'
-import IMG5 from '../../assets/images/portfolio_images/portfolio5.jpg'
+import IMG5 from '../../assets/images/portfolio_images/contentcreatorui.png'
 // eslint-disable-next-line
 import IMG6 from '../../assets/images/portfolio_images/portfolio6.jpg'
 
