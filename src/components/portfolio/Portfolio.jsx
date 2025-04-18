@@ -108,13 +108,18 @@ const data = [
     ]
   },
 
-  /*{
+  {
     id: 6,
     image: IMG6,
-    title: 'Figma dashboard UI kit for data design web apps',
-    github: 'https://github.com',
-    demo: "https://dribbble.com/shots/19838794-Eclipse-Figma-dashboard-UI-kit-for-data-design-web-apps"
-  },*/
+    title: 'Quiz App',
+    github: 'https://github.com/TejasBadhe07/Quiz-Master',
+    demo: "https://quiz-master-tawny-pi.vercel.app/",
+    features: [
+      'Daily Quiz',
+      'Quiz Leaderboard',
+      'Streak Counter'
+    ]
+  }
 ]
 
 const categories = ['All', 'Web Development', 'Computer Vision', 'Machine Learning', 'Deep Learning']
