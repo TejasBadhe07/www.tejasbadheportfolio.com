@@ -112,6 +112,9 @@ const data = [
     id: 6,
     image: IMG6,
     title: 'Quiz App',
+    description: 'An interactive quiz application that allows users to test their knowledge on various topics. Features include daily quizzes, leaderboards, and streak tracking to encourage regular participation.',
+    technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
+    category: 'Web Development',
     github: 'https://github.com/TejasBadhe07/Quiz-Master',
     demo: "https://quiz-master-tawny-pi.vercel.app/",
     features: [
