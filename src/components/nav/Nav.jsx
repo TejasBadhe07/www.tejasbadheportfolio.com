@@ -4,6 +4,7 @@ import {AiOutlineHome} from 'react-icons/ai'
 import {AiOutlineUser} from 'react-icons/ai'
 import {BiBook} from 'react-icons/bi'
 import {BiMessageSquareDetail} from 'react-icons/bi'
+import {FaBlog} from 'react-icons/fa'
 import { motion } from 'framer-motion'
 
 const Nav = () => {
@@ -73,6 +74,19 @@ const Nav = () => {
         whileTap={{ scale: 0.95 }}
       >
         <BiBook/>
+      </motion.a>
+      <motion.a 
+        href="#blog" 
+        onClick={(e) => {
+          e.preventDefault()
+          scrollToSection('#blog')
+          setActiveNav('blog')
+        }}
+        className={activeNav === 'blog' ? 'active' : ''}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <FaBlog/>
       </motion.a>
       <motion.a 
         href="#contact" 
