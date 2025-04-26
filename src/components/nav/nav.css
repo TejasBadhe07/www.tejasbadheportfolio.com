@@ -31,6 +31,9 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav a::before {
@@ -70,6 +73,8 @@
     .nav {
         padding: 0.7rem 1.2rem;
         bottom: 1.5rem;
+        width: 90%;
+        max-width: 400px;
     }
 
     .nav a {
@@ -83,6 +88,21 @@
     .nav {
         padding: 0.5rem 1rem;
         bottom: 1rem;
+        width: 95%;
+        max-width: 350px;
+    }
+
+    .nav a {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* ==================================== MEDIA QUERIES (LANDSCAPE MODE) ===================================================== */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .nav {
+        bottom: 0.5rem;
+        padding: 0.5rem 1rem;
     }
 
     .nav a {

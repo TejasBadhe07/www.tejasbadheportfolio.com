@@ -18,12 +18,14 @@ const Nav = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
-    setActiveNav('#')
+  const scrollToSection = (sectionId) => {
+    const element = document.querySelector(sectionId)
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
   }
 
   return (
@@ -35,7 +37,11 @@ const Nav = () => {
     >
       <motion.a 
         href="#home" 
-        onClick={scrollToTop} 
+        onClick={(e) => {
+          e.preventDefault()
+          scrollToSection('#home')
+          setActiveNav('#')
+        }}
         className={activeNav === '#' ? 'active' : ''}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
@@ -44,7 +50,11 @@ const Nav = () => {
       </motion.a>
       <motion.a 
         href="#about" 
-        onClick={() => setActiveNav('about')} 
+        onClick={(e) => {
+          e.preventDefault()
+          scrollToSection('#about')
+          setActiveNav('about')
+        }}
         className={activeNav === 'about' ? 'active' : ''}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
@@ -53,7 +63,11 @@ const Nav = () => {
       </motion.a>
       <motion.a 
         href="#experience" 
-        onClick={() => setActiveNav('experience')} 
+        onClick={(e) => {
+          e.preventDefault()
+          scrollToSection('#experience')
+          setActiveNav('experience')
+        }}
         className={activeNav === 'experience' ? 'active' : ''}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
@@ -62,7 +76,11 @@ const Nav = () => {
       </motion.a>
       <motion.a 
         href="#contact" 
-        onClick={() => setActiveNav('contact')} 
+        onClick={(e) => {
+          e.preventDefault()
+          scrollToSection('#contact')
+          setActiveNav('contact')
+        }}
         className={activeNav === 'contact' ? 'active' : ''}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
