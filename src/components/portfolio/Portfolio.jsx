@@ -120,7 +120,8 @@ const data = [
     features: [
       'Daily Quiz',
       'Quiz Leaderboard',
-      'Streak Counter'
+      'Streak Counter',
+      'Responsive Design'
     ]
   }
 ]
