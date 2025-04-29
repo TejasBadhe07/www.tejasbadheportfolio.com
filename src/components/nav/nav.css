@@ -2,14 +2,14 @@
     background: var(--color-bg-overlay);
     width: max-content;
     display: block;
-    padding: 0.7rem 1.7rem;
+    padding: 0.5rem 1.2rem;
     z-index: 2;
     position: fixed;
-    left: 50%;
+    left: 35%;
     transform: translateX(-50%);
     bottom: 2rem;
     display: flex;
-    gap: 0.8rem;
+    gap: 0.5rem;
     border-radius: 3rem;
     backdrop-filter: blur(15px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -71,14 +71,15 @@
 /* ==================================== MEDIA QUERIES (SMALL DEVICE) ===================================================== */
 @media screen and (max-width:600px) {
     .nav {
-        padding: 0.7rem 1.2rem;
+        padding: 0.4rem 1rem;
         bottom: 1.5rem;
-        width: 90%;
-        max-width: 400px;
+        left: 30%;
+        width: max-content;
+        max-width: 300px;
     }
 
     .nav a {
-        padding: 0.7rem;
+        padding: 0.5rem;
         font-size: 1rem;
     }
 }
@@ -86,14 +87,15 @@
 /* ==================================== MEDIA QUERIES (VERY SMALL DEVICE) ===================================================== */
 @media screen and (max-width:400px) {
     .nav {
-        padding: 0.5rem 1rem;
+        padding: 0.3rem 0.8rem;
         bottom: 1rem;
-        width: 95%;
-        max-width: 350px;
+        left: 25%;
+        width: max-content;
+        max-width: 250px;
     }
 
     .nav a {
-        padding: 0.5rem;
+        padding: 0.4rem;
         font-size: 0.9rem;
     }
 }
