@@ -20,12 +20,19 @@ const Nav = () => {
   }, [])
 
   const scrollToSection = (sectionId) => {
-    const element = document.querySelector(sectionId)
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+    if (sectionId === '#home') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
       })
+    } else {
+      const element = document.querySelector(sectionId)
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        })
+      }
     }
   }
 
