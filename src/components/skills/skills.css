@@ -15,15 +15,13 @@
     overflow: hidden;
     transform-style: preserve-3d;
     cursor: pointer;
+    backdrop-filter: blur(10px);
 }
 
 .skills__category::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: linear-gradient(45deg, 
         transparent,
         var(--color-primary-variant),
@@ -31,25 +29,29 @@
     );
     opacity: 0;
     transition: opacity 0.4s ease;
+    z-index: 1;
 }
 
 .skills__category::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: var(--color-primary);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
+    inset: 0;
+    background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 255, 255, 0.1),
+        transparent 40%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
 }
 
 .skills__category:hover {
     transform: translateY(-10px) rotateX(5deg);
     border-color: var(--color-primary);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.2),
+        0 0 0 2px var(--color-primary-variant);
 }
 
 .skills__category:hover::before {
@@ -57,7 +59,7 @@
 }
 
 .skills__category:hover::after {
-    transform: scaleX(1);
+    opacity: 1;
 }
 
 .skills__category h3 {
@@ -66,7 +68,7 @@
     color: var(--color-primary);
     font-size: 1.3rem;
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,6 +91,8 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+    position: relative;
+    z-index: 2;
 }
 
 .skill__item {
@@ -99,6 +103,21 @@
     position: relative;
     overflow: hidden;
     border: 1px solid transparent;
+    backdrop-filter: blur(5px);
+}
+
+.skill__item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
 }
 
 .skill__item:hover {
@@ -106,6 +125,10 @@
     background: rgba(0, 0, 0, 0.3);
     border-color: var(--color-primary-variant);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.skill__item:hover::before {
+    transform: translateX(100%);
 }
 
 .skill__header {
@@ -125,12 +148,14 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    transform: translateZ(10px);
 }
 
 .skill__item:hover .skill__icon {
-    transform: rotate(10deg);
+    transform: rotate(10deg) translateZ(20px);
     background: var(--color-primary);
     color: var(--color-bg);
+    box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.3);
 }
 
 .skill__header h4 {
@@ -204,6 +229,20 @@
     100% {
         transform: translateX(100%);
     }
+}
+
+/* Add mouse tracking effect */
+.skills__category {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+
+.skills__category:hover {
+    background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 255, 255, 0.1),
+        transparent 40%
+    );
 }
 
 /* ==================================== MEDIA QUERIES (MEDIUM DEVICE) ===================================================== */

@@ -47,15 +47,13 @@
     position: relative;
     overflow: hidden;
     transform-style: preserve-3d;
+    backdrop-filter: blur(10px);
 }
 
 .portfolio__item::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: linear-gradient(45deg, 
         transparent,
         var(--color-primary-variant),
@@ -63,25 +61,29 @@
     );
     opacity: 0;
     transition: opacity 0.4s ease;
+    z-index: 1;
 }
 
 .portfolio__item::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: var(--color-primary);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
+    inset: 0;
+    background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 255, 255, 0.1),
+        transparent 40%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
 }
 
 .portfolio__item:hover {
     transform: translateY(-10px) rotateX(5deg);
     border-color: var(--color-primary);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.2),
+        0 0 0 2px var(--color-primary-variant);
 }
 
 .portfolio__item:hover::before {
@@ -89,7 +91,7 @@
 }
 
 .portfolio__item:hover::after {
-    transform: scaleX(1);
+    opacity: 1;
 }
 
 .portfolio__item-image {
@@ -103,10 +105,7 @@
 .portfolio__item-image::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: linear-gradient(
         to bottom,
         transparent,
@@ -117,8 +116,35 @@
     z-index: 1;
 }
 
+.portfolio__item-image::after {
+    content: 'View Project';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.8),
+        transparent
+    );
+    color: var(--color-white);
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
 .portfolio__item:hover .portfolio__item-image::before {
     opacity: 1;
+}
+
+.portfolio__item:hover .portfolio__item-image::after {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .portfolio__item-image img {
@@ -138,17 +164,30 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .portfolio__item-content h3 {
     margin: 1.2rem 0 0.5rem;
     color: var(--color-white);
     transition: color 0.3s ease;
+    position: relative;
+    display: inline-block;
 }
 
-.portfolio__item:hover .portfolio__item-content h3 {
-    color: var(--color-primary);
+.portfolio__item-content h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--color-primary);
+    transition: width 0.3s ease;
+}
+
+.portfolio__item:hover .portfolio__item-content h3::after {
+    width: 100%;
 }
 
 .portfolio__item-description {
@@ -157,10 +196,25 @@
     margin-bottom: 1rem;
     line-height: 1.6;
     transition: color 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.portfolio__item:hover .portfolio__item-description {
-    color: var(--color-white);
+.portfolio__item-description::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        var(--color-bg-variant)
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.portfolio__item:hover .portfolio__item-description::before {
+    opacity: 0.5;
 }
 
 .portfolio__item-technologies {
@@ -178,11 +232,33 @@
     font-size: 0.8rem;
     transition: all 0.3s ease;
     transform: translateZ(10px);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.technology-tag::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.portfolio__item:hover .technology-tag::before {
+    transform: translateX(100%);
 }
 
 .portfolio__item:hover .technology-tag {
     background: var(--color-primary);
     transform: translateZ(20px);
+    box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.3);
 }
 
 .portfolio__item-cta {
@@ -209,6 +285,41 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 500;
     transform: translateZ(10px);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.portfolio__item-cta .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.portfolio__item-cta .btn:hover::before {
+    transform: translateX(100%);
+}
+
+.portfolio__item-cta .btn::after {
+    content: '→';
+    position: absolute;
+    right: 0;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.portfolio__item-cta .btn:hover::after {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .portfolio__item-cta .btn-primary {
@@ -220,12 +331,28 @@
     background: transparent;
     color: var(--color-white);
     transform: translateZ(20px) translateY(-3px);
+    box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.3);
 }
 
 .portfolio__item-cta .btn:hover {
     background: var(--color-primary);
     color: var(--color-bg);
     transform: translateZ(20px) translateY(-3px);
+    box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.3);
+}
+
+/* Add mouse tracking effect */
+.portfolio__item {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+
+.portfolio__item:hover {
+    background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 255, 255, 0.1),
+        transparent 40%
+    );
 }
 
 /* ==================================== MEDIA QUERIES (MEDIUM DEVICE) ===================================================== */
@@ -255,4 +382,21 @@
         padding: 0.4rem 1rem;
         font-size: 0.8rem;
     }
+}
+
+/* Add a subtle pulse animation to the entire card */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    100% {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.portfolio__item:hover {
+    animation: pulse 2s infinite;
 }
