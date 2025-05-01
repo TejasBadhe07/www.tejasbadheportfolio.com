@@ -1,4 +1,3 @@
-{/*
 import React from 'react'
 import './testimonials.css'
 import AVTR1 from '../../assets/images/testimonial_images/testimonial1.jpg'
@@ -6,7 +5,6 @@ import AVTR2 from '../../assets/images/testimonial_images/testimonial2.jpg'
 import AVTR3 from '../../assets/images/testimonial_images/testimonial3.jpg'
 import AVTR4 from '../../assets/images/testimonial_images/testimonial4.jpg'
 
-// import React, { useRef, useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -14,10 +12,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-// import './styles.css';
-
 // import required modules
-import { Pagination } from 'swiper/modules';
+import { Pagination } from 'swiper';
 
 const data = [
   {
@@ -77,4 +73,4 @@ const Testimonials = () => {
   )
 }
 
-export default Testimonials*/}
+export default Testimonials
