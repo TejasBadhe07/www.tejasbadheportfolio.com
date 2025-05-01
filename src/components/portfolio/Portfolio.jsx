@@ -66,7 +66,8 @@ const data = [
       'Real-time prediction',
       'Model performance visualization',
       'Easy integration with other applications',
-      'Custom dataset support'
+      'Custom dataset support',
+      'User-friendly interface'
     ]
   },
 
