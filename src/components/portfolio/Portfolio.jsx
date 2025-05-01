@@ -7,7 +7,7 @@ import IMG3 from '../../assets/images/portfolio_images/handwriting_digit_recogni
 import IMG4 from '../../assets/images/portfolio_images/image_classification.png'
 import IMG5 from '../../assets/images/portfolio_images/contentcreatorui.png'
 // eslint-disable-next-line
-import IMG6 from '../../assets/images/portfolio_images/portfolio6.jpg'
+import IMG6 from '../../assets/images/portfolio_images/quizmaster.png'
 
 
 /* ==================================== PORTFOLIO PROJEC AND ITS LINKS IN THIS CLASS ========================================== */
