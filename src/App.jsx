@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/header/Header';
 import Nav from './components/nav/Nav';
 import About from './components/about/About';
@@ -6,6 +7,7 @@ import Experience from './components/experience/Experience';
 import Skills from './components/skills/Skills';
 import Portfolio from './components/portfolio/Portfolio';
 import Blog from './components/blog/Blog';
+import BlogPost from './components/blog/BlogPost';
 // eslint-disable-next-line
 import Testimonials from './components/testimonials/Testimonials';
 import Contact from './components/contact/Contact';
@@ -36,26 +38,36 @@ const App = () => {
     };
   }, []);
 
+  const MainContent = () => (
+    <>
+      <ScrollProgress className={showScrollProgress ? 'visible' : ''} />
+      <Header />
+      <Nav />
+      <About />
+      <Experience />
+      <Skills />
+      <Portfolio />
+      <Blog />
+      {/*<Testimonials /> */}
+      <Contact />
+      <Footer />
+    </>
+  );
+
   return (
-    <ThemeProvider>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          <ScrollProgress className={showScrollProgress ? 'visible' : ''} />
-          <Header />
-          <Nav />
-          <About />
-          <Experience />
-          <Skills />
-          <Portfolio />
-          <Blog />
-          {/*<Testimonials /> */}
-          <Contact />
-          <Footer />
-        </>
-      )}
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <Routes>
+            <Route path="/" element={<MainContent />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+          </Routes>
+        )}
+      </ThemeProvider>
+    </BrowserRouter>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import './blog.css'
 import { motion } from 'framer-motion'
 import { FaCalendarAlt, FaTags, FaArrowRight } from 'react-icons/fa'
@@ -91,7 +92,7 @@ const Blog = () => {
         <div className="blog__posts">
           {filteredPosts.map(post => {
             // Create a URL-friendly slug from the title if not provided
-            const slug = post.fields.slug || post.fields.title
+            const slug = post.fields.title
               .toLowerCase()
               .replace(/[^a-z0-9]+/g, '-')
               .replace(/(^-|-$)/g, '')
@@ -129,9 +130,9 @@ const Blog = () => {
                       <span key={tag} className="blog__post-tag">{tag}</span>
                     ))}
                   </div>
-                  <a href={`/blog/${slug}`} className="btn btn-primary">
+                  <Link to={`/blog/${slug}`} className="btn btn-primary">
                     Read More <FaArrowRight />
-                  </a>
+                  </Link>
                 </div>
               </motion.article>
             )

@@ -18,12 +18,31 @@ export const getBlogPosts = async () => {
 export const getBlogPost = async (slug) => {
   try {
     console.log('Fetching blog post with slug:', slug)
+    
+    // First, get all blog posts
     const response = await client.getEntries({
       content_type: 'tejasPortfolioBlogPost',
-      'fields.slug': slug
+      include: 2
     })
-    console.log('Blog post fetched successfully:', response.items[0])
-    return response.items[0]
+    
+    console.log('All blog posts:', response.items)
+    
+    // Find the post with matching title (since we're using title as slug)
+    const post = response.items.find(item => {
+      const postSlug = item.fields.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '')
+      return postSlug === slug
+    })
+    
+    if (!post) {
+      console.log('No blog post found with slug:', slug)
+      return null
+    }
+
+    console.log('Found matching blog post:', post)
+    return post
   } catch (error) {
     console.error('Error fetching blog post:', error)
     return null
