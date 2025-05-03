@@ -1,101 +1,142 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './blog.css'
 import { motion } from 'framer-motion'
 import { FaCalendarAlt, FaTags, FaArrowRight } from 'react-icons/fa'
-
-const blogData = [
-  {
-    id: 1,
-    title: 'Building a Full-Stack Quiz Application with React and Node.js',
-    excerpt: 'Learn how to create an interactive quiz application using modern web technologies. This article covers the complete development process from design to deployment.',
-    date: 'March 15, 2024',
-    tags: ['React', 'Node.js', 'MongoDB', 'Full Stack'],
-    readTime: '8 min read',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-    link: '#'
-  },
-  {
-    id: 2,
-    title: 'Machine Learning in Web Development: A Practical Guide',
-    excerpt: 'Explore how to integrate machine learning models into web applications. This guide covers TensorFlow.js, model deployment, and real-world applications.',
-    date: 'March 10, 2024',
-    tags: ['Machine Learning', 'TensorFlow', 'Web Development'],
-    readTime: '10 min read',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-    link: '#'
-  },
-  {
-    id: 3,
-    title: 'Optimizing React Performance: Best Practices and Tips',
-    excerpt: 'Discover effective strategies to improve your React application\'s performance. Learn about code splitting, lazy loading, and other optimization techniques.',
-    date: 'March 5, 2024',
-    tags: ['React', 'Performance', 'JavaScript'],
-    readTime: '6 min read',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-    link: '#'
-  }
-]
+import { getBlogPosts } from '../../services/blogService'
 
 const Blog = () => {
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [activeTag, setActiveTag] = useState('All')
 
-  const allTags = ['All', ...new Set(blogData.flatMap(blog => blog.tags))]
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        console.log('Starting to fetch posts...')
+        const blogPosts = await getBlogPosts()
+        console.log('Posts fetched:', blogPosts)
+        setPosts(blogPosts)
+      } catch (error) {
+        console.error('Error in fetchPosts:', error)
+        setError('Failed to load blog posts. Please try again later.')
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  const filteredBlogs = activeTag === 'All' 
-    ? blogData 
-    : blogData.filter(blog => blog.tags.includes(activeTag))
+    fetchPosts()
+  }, [])
+
+  const allTags = ['All', 'Contentful', 'React', 'Portfolio'] // Default tags since they're not in the response
+
+  const filteredPosts = activeTag === 'All' 
+    ? posts 
+    : posts.filter(post => post.fields.tags?.includes(activeTag))
+
+  if (loading) {
+    return (
+      <section id='blog'>
+        <h5>My Technical Articles</h5>
+        <h2>Blog</h2>
+        <div className="container blog__container">
+          <p>Loading posts...</p>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section id='blog'>
+        <h5>My Technical Articles</h5>
+        <h2>Blog</h2>
+        <div className="container blog__container">
+          <p className="error">{error}</p>
+        </div>
+      </section>
+    )
+  }
+
+  if (posts.length === 0) {
+    return (
+      <section id='blog'>
+        <h5>My Technical Articles</h5>
+        <h2>Blog</h2>
+        <div className="container blog__container">
+          <p>No blog posts found.</p>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section id='blog'>
       <h5>My Technical Articles</h5>
       <h2>Blog</h2>
 
-      <div className='blog__filters'>
-        {allTags.map(tag => (
-          <button
-            key={tag}
-            className={`filter-btn ${activeTag === tag ? 'active' : ''}`}
-            onClick={() => setActiveTag(tag)}
-          >
-            {tag}
-          </button>
-        ))}
-      </div>
+      <div className="container blog__container">
+        <div className="blog__tags">
+          {allTags.map(tag => (
+            <button
+              key={tag}
+              className={`blog__tag ${activeTag === tag ? 'active' : ''}`}
+              onClick={() => setActiveTag(tag)}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
 
-      <div className='container blog__container'>
-        {filteredBlogs.map(({id, title, excerpt, date, tags, readTime, image, link}) => (
-          <motion.article 
-            key={id} 
-            className='blog__item'
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className='blog__item-image'>
-              <img src={image} alt={title} />
-            </div>
-            <div className='blog__item-content'>
-              <div className='blog__item-meta'>
-                <span className='blog__item-date'>
-                  <FaCalendarAlt /> {date}
-                </span>
-                <span className='blog__item-readtime'>{readTime}</span>
-              </div>
-              <h3>{title}</h3>
-              <p>{excerpt}</p>
-              <div className='blog__item-tags'>
-                <FaTags />
-                {tags.map((tag, index) => (
-                  <span key={index} className='tag'>{tag}</span>
-                ))}
-              </div>
-              <a href={link} className='blog__item-link'>
-                Read More <FaArrowRight />
-              </a>
-            </div>
-          </motion.article>
-        ))}
+        <div className="blog__posts">
+          {filteredPosts.map(post => {
+            // Create a URL-friendly slug from the title if not provided
+            const slug = post.fields.slug || post.fields.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/(^-|-$)/g, '')
+
+            return (
+              <motion.article
+                key={post.sys.id}
+                className="blog__post"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="blog__post-image">
+                  <img 
+                    src={post.fields.coverImage?.fields?.file?.url} 
+                    alt={post.fields.title}
+                    onError={(e) => {
+                      e.target.src = 'path-to-default-image.jpg' // Add a default image path
+                    }}
+                  />
+                </div>
+                <div className="blog__post-content">
+                  <div className="blog__post-meta">
+                    <span>
+                      <FaCalendarAlt /> {new Date(post.fields.publishedDate).toLocaleDateString()}
+                    </span>
+                    <span>
+                      <FaTags /> {post.fields.readTime} min read
+                    </span>
+                  </div>
+                  <h3>{post.fields.title}</h3>
+                  <p>{post.fields.excerpt}</p>
+                  <div className="blog__post-tags">
+                    {allTags.filter(tag => tag !== 'All').map(tag => (
+                      <span key={tag} className="blog__post-tag">{tag}</span>
+                    ))}
+                  </div>
+                  <a href={`/blog/${slug}`} className="btn btn-primary">
+                    Read More <FaArrowRight />
+                  </a>
+                </div>
+              </motion.article>
+            )
+          })}
+        </div>
       </div>
     </section>
   )
