@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FaCalendarAlt, FaTags, FaArrowLeft } from 'react-icons/fa'
+import { FaCalendarAlt, FaTags, FaArrowLeft, FaHome } from 'react-icons/fa'
 import { getBlogPost } from '../../services/blogService'
 import './blog.css'
 
@@ -70,15 +70,29 @@ const BlogPost = () => {
   return (
     <section className="blog-post">
       <div className="container">
-        <motion.button
-          className="btn btn-primary back-button"
-          onClick={() => navigate('/blog')}
+        <motion.div 
+          className="blog-post__navigation"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <FaArrowLeft /> Back to Blog
-        </motion.button>
+          <motion.button
+            className="btn btn-primary"
+            onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FaHome /> Back to Home
+          </motion.button>
+          <motion.button
+            className="btn btn-primary"
+            onClick={() => navigate(`${process.env.PUBLIC_URL}/blog`)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FaArrowLeft /> Back to Blog
+          </motion.button>
+        </motion.div>
 
         <motion.article
           className="blog-post__content"

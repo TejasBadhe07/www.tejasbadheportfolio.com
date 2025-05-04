@@ -130,7 +130,7 @@ const Blog = () => {
                       <span key={tag} className="blog__post-tag">{tag}</span>
                     ))}
                   </div>
-                  <Link to={`/blog/${slug}`} className="btn btn-primary">
+                  <Link to={`${process.env.PUBLIC_URL}/blog/${slug}`} className="btn btn-primary">
                     Read More <FaArrowRight />
                   </Link>
                 </div>

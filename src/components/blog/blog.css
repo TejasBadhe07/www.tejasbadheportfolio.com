@@ -207,6 +207,32 @@
     font-size: 0.9rem;
 }
 
+.blog-post__navigation {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: flex-start;
+}
+
+.blog-post__navigation .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.blog-post__navigation .btn:hover {
+    background-color: var(--primary-color-dark);
+    transform: translateY(-2px);
+}
+
 /* Responsive Design */
 @media screen and (max-width: 1024px) {
     .blog-post__content {
