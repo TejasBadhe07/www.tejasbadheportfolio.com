@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './blog.css'
 import { motion } from 'framer-motion'
-import { FaCalendarAlt, FaTags, FaArrowRight } from 'react-icons/fa'
+import { FaCalendarAlt, FaTags, FaArrowRight, FaHome } from 'react-icons/fa'
 import { getBlogPosts } from '../../services/blogService'
 
 const Blog = () => {
@@ -10,6 +10,7 @@ const Blog = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [activeTag, setActiveTag] = useState('All')
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -38,10 +39,28 @@ const Blog = () => {
   if (loading) {
     return (
       <section id='blog'>
-        <h5>My Technical Articles</h5>
-        <h2>Blog</h2>
         <div className="container blog__container">
-          <p>Loading posts...</p>
+          <motion.div 
+            className="blog__navigation"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.button
+              className="btn btn-primary"
+              onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaHome /> Back to Home
+            </motion.button>
+          </motion.div>
+
+          <h5>My Technical Articles</h5>
+          <h2>Blog</h2>
+          <div className="container blog__container">
+            <p>Loading posts...</p>
+          </div>
         </div>
       </section>
     )
@@ -50,10 +69,28 @@ const Blog = () => {
   if (error) {
     return (
       <section id='blog'>
-        <h5>My Technical Articles</h5>
-        <h2>Blog</h2>
         <div className="container blog__container">
-          <p className="error">{error}</p>
+          <motion.div 
+            className="blog__navigation"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.button
+              className="btn btn-primary"
+              onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaHome /> Back to Home
+            </motion.button>
+          </motion.div>
+
+          <h5>My Technical Articles</h5>
+          <h2>Blog</h2>
+          <div className="container blog__container">
+            <p className="error">{error}</p>
+          </div>
         </div>
       </section>
     )
@@ -62,10 +99,28 @@ const Blog = () => {
   if (posts.length === 0) {
     return (
       <section id='blog'>
-        <h5>My Technical Articles</h5>
-        <h2>Blog</h2>
         <div className="container blog__container">
-          <p>No blog posts found.</p>
+          <motion.div 
+            className="blog__navigation"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.button
+              className="btn btn-primary"
+              onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaHome /> Back to Home
+            </motion.button>
+          </motion.div>
+
+          <h5>My Technical Articles</h5>
+          <h2>Blog</h2>
+          <div className="container blog__container">
+            <p>No blog posts found.</p>
+          </div>
         </div>
       </section>
     )
@@ -73,10 +128,26 @@ const Blog = () => {
 
   return (
     <section id='blog'>
-      <h5>My Technical Articles</h5>
-      <h2>Blog</h2>
-
       <div className="container blog__container">
+        <motion.div 
+          className="blog__navigation"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.button
+            className="btn btn-primary"
+            onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FaHome /> Back to Home
+          </motion.button>
+        </motion.div>
+
+        <h5>My Technical Articles</h5>
+        <h2>Blog</h2>
+
         <div className="blog__tags">
           {allTags.map(tag => (
             <button
