@@ -2,15 +2,23 @@ import React from 'react';
 import './footer.css';
 import { FaFacebookF } from 'react-icons/fa';
 import { IoLogoTwitter } from 'react-icons/io';
-import {BsLinkedin} from 'react-icons/bs'
-import {FaGithub} from 'react-icons/fa'
-import {BsInstagram} from 'react-icons/bs'
-
+import { BsLinkedin } from 'react-icons/bs';
+import { FaGithub } from 'react-icons/fa';
+import { BsInstagram } from 'react-icons/bs';
+import { motion } from 'framer-motion';
 
 const Footer = () => {
   return (
     <footer>
-      <buttton href="#" className='footer__logo'>Tejas</buttton>
+      <motion.a 
+        href="#" 
+        className='footer__logo'
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        Tejas
+      </motion.a>
+      
       <ul className='permalinks'>
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
@@ -22,25 +30,55 @@ const Footer = () => {
       </ul>
 
       <div className='footer__socials'>
-        <a href="https://m.facebook.com/tejas.badhe.756/e" target='_blank' rel="noopener noreferrer">
-            <FaFacebookF />
-        </a>
-        <a href="https://x.com/TejasBadhe07" target='_blank' rel="noopener noreferrer">
-            <IoLogoTwitter />
-        </a>
-        <a href="https://www.linkedin.com/in/tejasbadhe07/" target="_blank" rel="noopener noreferrer">
-             <BsLinkedin/>
-         </a>        
-         <a href="https://github.com/TejasBadhe07" target="_blank" rel="noopener noreferrer">
-             <FaGithub/>
-         </a>        
-         <a href="https://www.instagram.com/tejasbadhe07" target="_blank" rel="noopener noreferrer">
-             <BsInstagram/>
-         </a>
-    </div>
+        <motion.a 
+          href="https://m.facebook.com/tejas.badhe.756/e" 
+          target='_blank' 
+          rel="noopener noreferrer"
+          whileHover={{ y: -5 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <FaFacebookF />
+        </motion.a>
+        <motion.a 
+          href="https://x.com/TejasBadhe07" 
+          target='_blank' 
+          rel="noopener noreferrer"
+          whileHover={{ y: -5 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <IoLogoTwitter />
+        </motion.a>
+        <motion.a 
+          href="https://www.linkedin.com/in/tejasbadhe07/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          whileHover={{ y: -5 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <BsLinkedin />
+        </motion.a>        
+        <motion.a 
+          href="https://github.com/TejasBadhe07" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          whileHover={{ y: -5 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <FaGithub />
+        </motion.a>        
+        <motion.a 
+          href="https://www.instagram.com/tejasbadhe07" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          whileHover={{ y: -5 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <BsInstagram />
+        </motion.a>
+      </div>
 
       <div className='footer__copyright'>
-        <small>&copy; Tejas Website. All rights reserved</small>
+        <small>&copy; {new Date().getFullYear()} Tejas Website. All rights reserved</small>
       </div>
     </footer>
   );
