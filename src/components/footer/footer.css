@@ -1,9 +1,9 @@
 footer {
     background: var(--color-bg-variant);
-    padding: 4rem 0 2rem;
+    padding: 2.5rem 0 1.5rem;
     text-align: center;
     font-size: 0.9rem;
-    margin-top: 7rem;
+    margin-top: 5rem;
     position: relative;
     overflow: hidden;
 }
@@ -29,9 +29,9 @@ footer a {
 }
 
 .footer__logo {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 600;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     display: inline-block;
     background: linear-gradient(45deg, var(--color-primary), var(--color-white));
     -webkit-background-clip: text;
@@ -59,8 +59,8 @@ footer a {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 2rem;
-    margin: 0 auto 3rem;
+    gap: 1.5rem;
+    margin: 0 auto 2rem;
 }
 
 .permalinks a {
@@ -86,19 +86,19 @@ footer a {
 .footer__socials {
     display: flex;
     justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 4rem;
+    gap: 1.2rem;
+    margin-bottom: 2.5rem;
 }
 
 .footer__socials a {
     background: var(--color-bg);
     color: var(--color-white);
-    padding: 0.8rem;
+    padding: 0.6rem;
     border-radius: 50%;
     display: flex;
     border: 1px solid transparent;
     transition: var(--transition);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 .footer__socials a:hover {
@@ -109,11 +109,11 @@ footer a {
 }
 
 .footer__copyright {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     color: var(--color-light);
     font-size: 0.8rem;
     position: relative;
-    padding-top: 2rem;
+    padding-top: 1.5rem;
 }
 
 .footer__copyright::before {
@@ -129,18 +129,29 @@ footer a {
 
 /* ==================================== MEDIA QUERIES (SMALL DEVICE) ===================================================== */
 @media screen and (max-width:600px) {
+    footer {
+        padding: 2rem 0 1rem;
+        margin-top: 4rem;
+    }
+
     .permalinks {
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
     }
 
     .footer__socials {
-        margin-bottom: 2.6rem;
-        gap: 1rem;
+        margin-bottom: 2rem;
+        gap: 0.8rem;
     }
 
     .footer__socials a {
-        padding: 0.6rem;
+        padding: 0.5rem;
         font-size: 1rem;
+    }
+
+    .footer__copyright {
+        padding-top: 1.2rem;
+        margin-bottom: 0.5rem;
     }
 }
