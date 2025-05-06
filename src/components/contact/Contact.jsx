@@ -1,195 +1,165 @@
-import React, { useState, useRef } from 'react'
-import './contact.css'
-import {MdOutlineMail} from 'react-icons/md'
-import {RiMessengerLine} from 'react-icons/ri'
-import {BsWhatsapp} from 'react-icons/bs'
-import emailjs from 'emailjs-com'
-import { motion } from 'framer-motion'
+import React, { useRef, useState } from 'react';
+import './contact.css';
+import { MdOutlineEmail } from 'react-icons/md';
+import { RiMessengerLine } from 'react-icons/ri';
+import { BsWhatsapp } from 'react-icons/bs';
+import { motion } from 'framer-motion';
+import emailjs from 'emailjs-com';
 
 const Contact = () => {
-  const form = useRef();
-  const [isLoading, setIsLoading] = useState(false);
-  const [notification, setNotification] = useState({ show: false, type: '', message: '' });
+  const formRef = useRef();
+  const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState({ show: false, message: '', type: '' });
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '',
     message: ''
   });
 
-  const showNotification = (type, message) => {
-    setNotification({ show: true, type, message });
-    setTimeout(() => setNotification({ show: false, type: '', message: '' }), 5000);
+  const showNotification = (message, type) => {
+    setNotification({ show: true, message, type });
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: '' });
+    }, 3000);
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
-  const sendEmail = async (e) => {
+  const sendEmail = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
 
-    try {
-      await emailjs.sendForm('service_ru0z89h', 'template_gvurn8d', form.current, 'Q6207eDGrt7F6eJpH');
-      showNotification('success', 'Message sent successfully!');
-      form.current.reset();
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
+    emailjs.sendForm(
+      'service_8q3g3qg',
+      'template_8q3g3qg',
+      formRef.current,
+      '8q3g3qg'
+    )
+      .then((result) => {
+        showNotification('Message sent successfully!', 'success');
+        formRef.current.reset();
+        setFormData({ name: '', email: '', message: '' });
+      })
+      .catch((error) => {
+        showNotification('Failed to send message. Please try again.', 'error');
+      })
+      .finally(() => {
+        setLoading(false);
       });
-    } catch (error) {
-      showNotification('error', 'Failed to send message. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const contactOptions = [
     {
-      icon: <MdOutlineMail className='contact__option-icon'/>,
+      icon: <MdOutlineEmail className="contact__option-icon" />,
       title: 'Email',
-      value: 'tbadhe75@gmail.com',
-      link: 'mailto:tbadhe75@gmail.com',
-      text: 'Send a Message'
+      subtitle: 'tejasbadhe@gmail.com',
+      link: 'mailto:tejasbadhe@gmail.com'
     },
     {
-      icon: <RiMessengerLine className='contact__option-icon'/>,
+      icon: <RiMessengerLine className="contact__option-icon" />,
       title: 'Messenger',
-      value: 'tejas',
-      link: 'https://m.me/tejas.badhe.756',
-      text: 'Send a message'
+      subtitle: 'tejasbadhe',
+      link: 'https://m.me/tejasbadhe'
     },
     {
-      icon: <BsWhatsapp className='contact__option-icon'/>,
-      title: 'Whatsapp',
-      value: '+91 7719063683',
-      link: 'https://api.whatsapp.com/send?phone=+917719063683',
-      text: 'Send a Message'
+      icon: <BsWhatsapp className="contact__option-icon" />,
+      title: 'WhatsApp',
+      subtitle: '+91 1234567890',
+      link: 'https://wa.me/911234567890'
     }
   ];
 
   return (
-    <section id='contact'>
+    <section id="contact">
       <h5>Get In Touch</h5>
       <h2>Contact Me</h2>
 
-      <div className='container contact__container'>
-        <div className='contact__options'>
+      <div className="container contact__container">
+        <div className="contact__options">
           {contactOptions.map((option, index) => (
-            <motion.article 
+            <motion.article
               key={index}
-              className='contact__option'
+              className="contact__option"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ delay: index * 0.1 }}
             >
               {option.icon}
               <h4>{option.title}</h4>
-              <h5>{option.value}</h5>
-              <motion.a 
-                href={option.link} 
-                target='_blank' 
-                rel="noreferrer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {option.text}
-              </motion.a>
+              <h5>{option.subtitle}</h5>
+              <a href={option.link} target="_blank" rel="noreferrer">
+                Send a message
+              </a>
             </motion.article>
           ))}
         </div>
 
-        <motion.form 
-          ref={form} 
-          onSubmit={sendEmail} 
-          className='contact__form'
+        <motion.form
+          ref={formRef}
+          onSubmit={sendEmail}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ delay: 0.3 }}
+          className="contact__form"
         >
-          <div className='form__group'>
-            <input 
-              type="text" 
-              name='name' 
-              placeholder='Your Full Name' 
-              required 
-              minLength="2"
-              maxLength="50"
+          <div className="form__group">
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Full Name"
+              required
               value={formData.name}
               onChange={handleInputChange}
             />
           </div>
-          
-          <div className='form__group'>
-            <input 
-              type="email" 
-              name='email' 
-              placeholder='Your Email' 
-              required 
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+          <div className="form__group">
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              required
               value={formData.email}
               onChange={handleInputChange}
             />
           </div>
-
-          <div className='form__group'>
-            <select 
-              name="subject" 
+          <div className="form__group">
+            <textarea
+              name="message"
+              rows="7"
+              placeholder="Your Message"
               required
-              value={formData.subject}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Subject</option>
-              <option value="job">Job Opportunity</option>
-              <option value="project">Project Collaboration</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          <div className='form__group'>
-            <textarea 
-              name="message" 
-              rows="7" 
-              placeholder='Your Message' 
-              required
-              minLength="10"
-              maxLength="500"
               value={formData.message}
               onChange={handleInputChange}
             ></textarea>
           </div>
-
-          <motion.button 
-            type='submit' 
-            className='btn btn-primary'
-            disabled={isLoading}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={loading}
           >
-            {isLoading ? 'Sending...' : 'Send Message'}
-          </motion.button>
+            {loading ? 'Sending...' : 'Send Message'}
+          </button>
         </motion.form>
-
-        {notification.show && (
-          <motion.div 
-            className={`notification ${notification.type}`}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-          >
-            {notification.message}
-          </motion.div>
-        )}
       </div>
-    </section>
-  )
-}
 
-export default Contact
+      {notification.show && (
+        <motion.div
+          className={`notification ${notification.type}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+        >
+          {notification.message}
+        </motion.div>
+      )}
+    </section>
+  );
+};
+
+export default Contact;
