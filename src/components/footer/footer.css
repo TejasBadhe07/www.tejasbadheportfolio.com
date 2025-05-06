@@ -130,28 +130,83 @@ footer a {
 /* ==================================== MEDIA QUERIES (SMALL DEVICE) ===================================================== */
 @media screen and (max-width:600px) {
     footer {
-        padding: 2rem 0 1rem;
+        padding: 2rem 1.5rem 1rem;
         margin-top: 4rem;
+        background: var(--color-bg-variant);
+    }
+
+    .footer__logo {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
     }
 
     .permalinks {
         flex-direction: column;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
+        gap: 0.8rem;
+        margin-bottom: 2rem;
+        padding: 0;
+    }
+
+    .permalinks li {
+        width: 100%;
+    }
+
+    .permalinks a {
+        display: inline-block;
+        padding: 0.4rem 0;
+        font-size: 0.9rem;
+        color: var(--color-light);
+        transition: all 0.3s ease;
+    }
+
+    .permalinks a:hover {
+        color: var(--color-primary);
+    }
+
+    .permalinks a::after {
+        display: block;
+        width: 0;
+        height: 1px;
+        background: var(--color-primary);
+        transition: width 0.3s ease;
+    }
+
+    .permalinks a:hover::after {
+        width: 30px;
+        margin: 0.2rem auto 0;
     }
 
     .footer__socials {
-        margin-bottom: 2rem;
-        gap: 0.8rem;
+        margin: 2rem auto;
+        gap: 1.2rem;
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
     }
 
     .footer__socials a {
         padding: 0.5rem;
-        font-size: 1rem;
+        font-size: 1.1rem;
+        background: var(--color-bg);
+        box-shadow: none;
+        border: 1px solid var(--color-primary-variant);
+    }
+
+    .footer__socials a:hover {
+        background: var(--color-primary);
+        color: var(--color-bg);
+        transform: translateY(-3px);
     }
 
     .footer__copyright {
-        padding-top: 1.2rem;
-        margin-bottom: 0.5rem;
+        padding-top: 1.5rem;
+        margin: 0;
+        font-size: 0.8rem;
+        color: var(--color-light);
+    }
+
+    .footer__copyright::before {
+        width: 40px;
+        opacity: 0.3;
     }
 }
