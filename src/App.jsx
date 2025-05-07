@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/header/Header';
 import Nav from './components/nav/Nav';
 import About from './components/about/About';
@@ -56,6 +56,15 @@ const App = () => {
     </>
   );
 
+  // Protected Route component
+  const ProtectedRoute = ({ children }) => {
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    if (!isAuthenticated) {
+      return <Navigate to="/dashboard" replace />;
+    }
+    return children;
+  };
+
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <ThemeProvider>
@@ -66,7 +75,15 @@ const App = () => {
             <Route path="/" element={<MainContent />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/dashboard/*" element={<Login />} />
+            <Route path="/dashboard" element={<Login />} />
+            <Route 
+              path="/dashboard/home" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
             <Route path="*" element={
               <div style={{ 
                 height: '100vh', 

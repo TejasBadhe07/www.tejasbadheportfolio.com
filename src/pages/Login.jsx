@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import './login.css';
 
 const Login = () => {
@@ -20,7 +20,13 @@ const Login = () => {
       REACT_APP_ADMIN_EMAIL: process.env.REACT_APP_ADMIN_EMAIL,
       REACT_APP_ADMIN_PASSWORD: process.env.REACT_APP_ADMIN_PASSWORD
     });
-  }, []);
+
+    // Check if already authenticated
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    if (isAuthenticated) {
+      navigate('/dashboard/home');
+    }
+  }, [navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,7 +48,7 @@ const Login = () => {
     ) {
       console.log('Login successful');
       localStorage.setItem('isAuthenticated', 'true');
-      navigate('/dashboard/home');
+      navigate('/dashboard/home', { replace: true });
     } else {
       console.log('Login failed');
       setError('Invalid email or password');
