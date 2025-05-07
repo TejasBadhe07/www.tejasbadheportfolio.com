@@ -438,31 +438,148 @@ const Dashboard = () => {
           <div className="content-section">
             <div className="section-header">
               <h2>Skills</h2>
-              <button className="add-button">
-                <FaPlus /> Add Skill
-              </button>
+              <div className="header-actions">
+                <button className="add-button">
+                  <FaPlus /> Add Skill
+                </button>
+              </div>
             </div>
+
+            <div className="skills-filters">
+              <div className="search-box">
+                <input type="text" placeholder="Search skills..." />
+                <FaSearch />
+              </div>
+              <div className="filter-buttons">
+                <button className="filter-button active">All</button>
+                <button className="filter-button">Frontend</button>
+                <button className="filter-button">Backend</button>
+                <button className="filter-button">Tools</button>
+              </div>
+            </div>
+
             <div className="skills-grid">
               {[
-                { name: "React", level: 90 },
-                { name: "JavaScript", level: 85 },
-                { name: "Node.js", level: 80 },
-                // Add more skills
-              ].map((skill, index) => (
-                <div key={index} className="skill-card">
-                  <div className="skill-header">
-                    <h3>{skill.name}</h3>
-                    <div className="skill-actions">
-                      <button className="edit-button"><FaEdit /></button>
-                      <button className="delete-button"><FaTimes /></button>
+                {
+                  category: "Frontend",
+                  skills: [
+                    { name: "React", level: 90, years: 3, projects: 15 },
+                    { name: "JavaScript", level: 85, years: 4, projects: 20 },
+                    { name: "HTML/CSS", level: 95, years: 5, projects: 25 }
+                  ]
+                },
+                {
+                  category: "Backend",
+                  skills: [
+                    { name: "Node.js", level: 80, years: 2, projects: 10 },
+                    { name: "Python", level: 75, years: 2, projects: 8 },
+                    { name: "SQL", level: 85, years: 3, projects: 12 }
+                  ]
+                },
+                {
+                  category: "Tools",
+                  skills: [
+                    { name: "Git", level: 90, years: 3, projects: 20 },
+                    { name: "Docker", level: 70, years: 1, projects: 5 },
+                    { name: "AWS", level: 65, years: 1, projects: 4 }
+                  ]
+                }
+              ].map((category, categoryIndex) => (
+                <motion.div
+                  key={categoryIndex}
+                  className="skill-category"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: categoryIndex * 0.1 }}
+                >
+                  <h3 className="category-title">{category.category}</h3>
+                  <div className="category-skills">
+                    {category.skills.map((skill, skillIndex) => (
+                      <motion.div
+                        key={skillIndex}
+                        className="skill-card"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: skillIndex * 0.1 }}
+                      >
+                        <div className="skill-header">
+                          <div className="skill-title">
+                            <h4>{skill.name}</h4>
+                            <span className="skill-years">{skill.years} years</span>
+                          </div>
+                          <div className="skill-actions">
+                            <button className="edit-button" title="Edit">
+                              <FaEdit />
+                            </button>
+                            <button className="delete-button" title="Delete">
+                              <FaTimes />
+                            </button>
+                          </div>
+                        </div>
+                        <div className="skill-progress">
+                          <div className="progress-bar" style={{ width: `${skill.level}%` }}></div>
+                          <span className="progress-text">{skill.level}%</span>
+                        </div>
+                        <div className="skill-meta">
+                          <div className="meta-item">
+                            <FaProjectDiagram />
+                            <span>{skill.projects} projects</span>
+                          </div>
+                          <div className="meta-item">
+                            <FaAward />
+                            <span>Expert</span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Add Skill Modal (Hidden by default) */}
+            <div className="modal" style={{ display: 'none' }}>
+              <div className="modal-content">
+                <h3>Add New Skill</h3>
+                <form className="skill-form">
+                  <div className="form-group">
+                    <label>Skill Name</label>
+                    <input type="text" placeholder="e.g., React" />
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Category</label>
+                      <select>
+                        <option value="frontend">Frontend</option>
+                        <option value="backend">Backend</option>
+                        <option value="tools">Tools</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label>Proficiency Level</label>
+                      <input type="range" min="0" max="100" defaultValue="50" />
                     </div>
                   </div>
-                  <div className="skill-progress">
-                    <div className="progress-bar" style={{ width: `${skill.level}%` }}></div>
-                    <span>{skill.level}%</span>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Years of Experience</label>
+                      <input type="number" min="0" placeholder="e.g., 2" />
+                    </div>
+                    <div className="form-group">
+                      <label>Projects Completed</label>
+                      <input type="number" min="0" placeholder="e.g., 10" />
+                    </div>
                   </div>
-                </div>
-              ))}
+                  <div className="form-group">
+                    <label>Description</label>
+                    <textarea placeholder="Describe your expertise in this skill..." />
+                  </div>
+                  <div className="form-actions">
+                    <button type="button" className="cancel-button">Cancel</button>
+                    <button type="submit" className="save-button">Save Skill</button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         );
