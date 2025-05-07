@@ -7,29 +7,24 @@ import {
   FaBriefcase, 
   FaCode, 
   FaBlog, 
-  FaEnvelope,
+  FaEnvelope, 
   FaSignOutAlt,
   FaBars,
   FaTimes,
   FaEye,
-  FaFileAlt,
+  FaComments,
   FaProjectDiagram,
-  FaEnvelopeOpen,
-  FaChartLine,
-  FaCalendarAlt,
-  FaBell
+  FaStar,
+  FaEdit,
+  FaPlus,
+  FaComment
 } from 'react-icons/fa';
 import './dashboard.css';
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [activeSection, setActiveSection] = useState('home');
-  const [notifications, setNotifications] = useState([
-    { id: 1, message: 'New message from John Doe', time: '5 minutes ago' },
-    { id: 2, message: 'Your blog post was featured', time: '1 hour ago' },
-    { id: 3, message: 'New project view', time: '2 hours ago' }
-  ]);
+  const [activeSection, setActiveSection] = useState('dashboard');
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if user is authenticated
@@ -53,12 +48,89 @@ const Dashboard = () => {
     { id: 'contact', icon: <FaEnvelope />, label: 'Contact' },
   ];
 
-  const recentActivities = [
-    { id: 1, type: 'view', title: 'Portfolio Page', time: '2 minutes ago' },
-    { id: 2, type: 'message', title: 'New Contact Form Submission', time: '15 minutes ago' },
-    { id: 3, type: 'blog', title: 'New Blog Comment', time: '1 hour ago' },
-    { id: 4, type: 'project', title: 'Project View Increased', time: '2 hours ago' }
+  const stats = [
+    { title: 'Total Views', value: '1,234', icon: <FaEye />, color: '#4CAF50' },
+    { title: 'Comments', value: '56', icon: <FaComments />, color: '#2196F3' },
+    { title: 'Projects', value: '12', icon: <FaCode />, color: '#9C27B0' },
+    { title: 'Testimonials', value: '8', icon: <FaStar />, color: '#FF9800' },
   ];
+
+  const recentActivities = [
+    { id: 1, action: 'Updated About Section', time: '2 hours ago', icon: <FaEdit /> },
+    { id: 2, action: 'Added New Project', time: '5 hours ago', icon: <FaPlus /> },
+    { id: 3, action: 'Received New Comment', time: '1 day ago', icon: <FaComment /> },
+  ];
+
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'dashboard':
+        return (
+          <div className="dashboard-overview">
+            <div className="overview-header">
+              <div className="header-left">
+                <h1>Dashboard</h1>
+                <p className="header-subtitle">Welcome back to your dashboard</p>
+              </div>
+              <div className="welcome-text">
+                <FaUser /> Admin
+              </div>
+            </div>
+            <div className="stats-grid">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  className="stat-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <div className="stat-icon" style={{ background: stat.color }}>
+                    {stat.icon}
+                  </div>
+                  <div className="stat-info">
+                    <h3>{stat.value}</h3>
+                    <p>{stat.title}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <div className="recent-activity">
+              <h2>Recent Activity</h2>
+              <div className="activity-list">
+                {recentActivities.map((activity) => (
+                  <motion.div
+                    key={activity.id}
+                    className="activity-item"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <div className="activity-icon">{activity.icon}</div>
+                    <div className="activity-details">
+                      <h4>{activity.action}</h4>
+                      <span>{activity.time}</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <motion.div
+            key={activeSection}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="content-section"
+          >
+            <h2>{menuItems.find(item => item.id === activeSection)?.label || 'Dashboard'} Content</h2>
+            <p>This is where the {activeSection} content will go.</p>
+          </motion.div>
+        );
+    }
+  };
 
   return (
     <div className="dashboard-layout">
@@ -89,7 +161,7 @@ const Dashboard = () => {
               whileTap={{ scale: 0.95 }}
             >
               {item.icon}
-              {isSidebarOpen && <span>{item.label}</span>}
+              <span>{item.label}</span>
             </motion.button>
           ))}
         </nav>
@@ -101,120 +173,13 @@ const Dashboard = () => {
           whileTap={{ scale: 0.95 }}
         >
           <FaSignOutAlt />
-          {isSidebarOpen && <span>Logout</span>}
+          <span>Logout</span>
         </motion.button>
       </motion.aside>
 
       {/* Main Content */}
       <main className="dashboard-main">
-        <header className="dashboard-header">
-          <h1>{menuItems.find(item => item.id === activeSection)?.label || 'Dashboard'}</h1>
-          <div className="header-actions">
-            <div className="notifications">
-              <FaBell />
-              <span className="notification-badge">{notifications.length}</span>
-            </div>
-            <span className="welcome-text">Welcome, Admin</span>
-          </div>
-        </header>
-
-        <div className="dashboard-content">
-          <motion.div
-            key={activeSection}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="content-section"
-          >
-            {activeSection === 'home' && (
-              <div className="dashboard-overview">
-                <div className="stats-grid">
-                  <div className="stat-card">
-                    <div className="stat-icon">
-                      <FaEye />
-                    </div>
-                    <div className="stat-info">
-                      <h3>Total Views</h3>
-                      <p>1,234</p>
-                      <span className="stat-trend positive">+12% from last month</span>
-                    </div>
-                  </div>
-                  <div className="stat-card">
-                    <div className="stat-icon">
-                      <FaFileAlt />
-                    </div>
-                    <div className="stat-info">
-                      <h3>Blog Posts</h3>
-                      <p>12</p>
-                      <span className="stat-trend">2 drafts pending</span>
-                    </div>
-                  </div>
-                  <div className="stat-card">
-                    <div className="stat-icon">
-                      <FaProjectDiagram />
-                    </div>
-                    <div className="stat-info">
-                      <h3>Projects</h3>
-                      <p>8</p>
-                      <span className="stat-trend positive">+2 new this month</span>
-                    </div>
-                  </div>
-                  <div className="stat-card">
-                    <div className="stat-icon">
-                      <FaEnvelopeOpen />
-                    </div>
-                    <div className="stat-info">
-                      <h3>Messages</h3>
-                      <p>25</p>
-                      <span className="stat-trend">5 unread</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="dashboard-grid">
-                  <div className="dashboard-card recent-activity">
-                    <div className="card-header">
-                      <h2>Recent Activity</h2>
-                      <FaCalendarAlt />
-                    </div>
-                    <div className="activity-list">
-                      {recentActivities.map(activity => (
-                        <div key={activity.id} className="activity-item">
-                          <div className="activity-icon">
-                            {activity.type === 'view' && <FaEye />}
-                            {activity.type === 'message' && <FaEnvelopeOpen />}
-                            {activity.type === 'blog' && <FaBlog />}
-                            {activity.type === 'project' && <FaProjectDiagram />}
-                          </div>
-                          <div className="activity-details">
-                            <h4>{activity.title}</h4>
-                            <span>{activity.time}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="dashboard-card notifications-card">
-                    <div className="card-header">
-                      <h2>Notifications</h2>
-                      <FaBell />
-                    </div>
-                    <div className="notifications-list">
-                      {notifications.map(notification => (
-                        <div key={notification.id} className="notification-item">
-                          <p>{notification.message}</p>
-                          <span>{notification.time}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            {/* Add other section content here */}
-          </motion.div>
-        </div>
+        {renderContent()}
       </main>
     </div>
   );
