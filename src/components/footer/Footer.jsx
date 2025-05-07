@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './footer.css';
 import { FaFacebookF } from 'react-icons/fa';
 import { IoLogoTwitter } from 'react-icons/io';
@@ -27,7 +28,7 @@ const Footer = () => {
         <li><a href="#portfolio">Portfolio</a></li>
         <li><a href="#testimonials">Testimonials</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><a href="/dashboard" className="dashboard-link">Dashboard</a></li>
+        <li><Link to="/dashboard" className="dashboard-link">Dashboard</Link></li>
       </ul>
 
       <div className='footer__socials'>

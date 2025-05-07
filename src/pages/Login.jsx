@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
@@ -11,27 +11,40 @@ const Login = () => {
   });
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    // Debug log on component mount
+    console.log('Login component mounted');
+    console.log('Current pathname:', window.location.pathname);
+    console.log('Environment variables:', {
+      PUBLIC_URL: process.env.PUBLIC_URL,
+      REACT_APP_ADMIN_EMAIL: process.env.REACT_APP_ADMIN_EMAIL,
+      REACT_APP_ADMIN_PASSWORD: process.env.REACT_APP_ADMIN_PASSWORD
+    });
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
 
-    // Debug logs
-    console.log('Environment variables:', {
+    console.log('Form submitted with:', formData);
+    console.log('Environment variables in submit:', {
       email: process.env.REACT_APP_ADMIN_EMAIL,
       password: process.env.REACT_APP_ADMIN_PASSWORD
     });
-    console.log('Form data:', formData);
 
-    // Check credentials against environment variables
+    // Hardcoded credentials for development
+    const adminEmail = 'admin@admin.com';
+    const adminPassword = 'admin123';
+
     if (
-      formData.email === process.env.REACT_APP_ADMIN_EMAIL &&
-      formData.password === process.env.REACT_APP_ADMIN_PASSWORD
+      formData.email === adminEmail &&
+      formData.password === adminPassword
     ) {
-      // Store authentication state
+      console.log('Login successful');
       localStorage.setItem('isAuthenticated', 'true');
-      // Redirect to dashboard
       navigate('/dashboard/home');
     } else {
+      console.log('Login failed');
       setError('Invalid email or password');
     }
   };
