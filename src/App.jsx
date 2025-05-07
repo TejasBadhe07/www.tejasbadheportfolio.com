@@ -15,6 +15,8 @@ import Footer from './components/footer/Footer';
 import { ThemeProvider } from './context/ThemeContext';
 import Loading from './components/loading/Loading';
 import ScrollProgress from './components/scrollProgress/ScrollProgress';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -64,6 +66,8 @@ const App = () => {
             <Route path="/" element={<MainContent />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/dashboard" element={<Login />} />
+            <Route path="/dashboard/home" element={<Dashboard />} />
           </Routes>
         )}
       </ThemeProvider>
