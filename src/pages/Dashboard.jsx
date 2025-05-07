@@ -588,33 +588,165 @@ const Dashboard = () => {
           <div className="content-section">
             <div className="section-header">
               <h2>Blog Posts</h2>
-              <button className="add-button">
-                <FaPlus /> New Post
-              </button>
+              <div className="header-actions">
+                <button className="add-button">
+                  <FaPlus /> New Post
+                </button>
+              </div>
             </div>
-            <div className="blog-list">
+
+            <div className="blog-filters">
+              <div className="search-box">
+                <input type="text" placeholder="Search posts..." />
+                <FaSearch />
+              </div>
+              <div className="filter-buttons">
+                <button className="filter-button active">All</button>
+                <button className="filter-button">Published</button>
+                <button className="filter-button">Draft</button>
+                <button className="filter-button">Archived</button>
+              </div>
+            </div>
+
+            <div className="blog-grid">
               {[
                 {
+                  id: 1,
                   title: "Getting Started with React",
+                  excerpt: "Learn the fundamentals of React and build your first application...",
                   date: "2024-03-15",
-                  status: "Published"
+                  status: "Published",
+                  views: 1234,
+                  comments: 15,
+                  category: "Development",
+                  image: "https://via.placeholder.com/300x200"
                 },
-                // Add more blog posts
+                {
+                  id: 2,
+                  title: "Advanced CSS Techniques",
+                  excerpt: "Master modern CSS features and create stunning layouts...",
+                  date: "2024-03-10",
+                  status: "Published",
+                  views: 856,
+                  comments: 8,
+                  category: "Design",
+                  image: "https://via.placeholder.com/300x200"
+                },
+                {
+                  id: 3,
+                  title: "Node.js Best Practices",
+                  excerpt: "Discover the best practices for building scalable Node.js applications...",
+                  date: "2024-03-05",
+                  status: "Draft",
+                  views: 0,
+                  comments: 0,
+                  category: "Backend",
+                  image: "https://via.placeholder.com/300x200"
+                }
               ].map((post, index) => (
-                <div key={index} className="blog-item">
-                  <div className="blog-info">
-                    <h3>{post.title}</h3>
+                <motion.div
+                  key={post.id}
+                  className="blog-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <div className="blog-image">
+                    <img src={post.image} alt={post.title} />
+                    <div className="blog-category">{post.category}</div>
+                  </div>
+                  <div className="blog-content">
+                    <div className="blog-header">
+                      <h3>{post.title}</h3>
+                      <div className="blog-actions">
+                        <button className="edit-button" title="Edit">
+                          <FaEdit />
+                        </button>
+                        <button className="delete-button" title="Delete">
+                          <FaTimes />
+                        </button>
+                      </div>
+                    </div>
+                    <p className="blog-excerpt">{post.excerpt}</p>
                     <div className="blog-meta">
-                      <span className="date">{post.date}</span>
-                      <span className="status">{post.status}</span>
+                      <div className="meta-item">
+                        <FaCalendarAlt />
+                        <span>{post.date}</span>
+                      </div>
+                      <div className="meta-item">
+                        <FaEye />
+                        <span>{post.views} views</span>
+                      </div>
+                      <div className="meta-item">
+                        <FaComments />
+                        <span>{post.comments} comments</span>
+                      </div>
+                    </div>
+                    <div className="blog-status">
+                      <span className={`status-badge ${post.status.toLowerCase()}`}>
+                        {post.status}
+                      </span>
                     </div>
                   </div>
-                  <div className="blog-actions">
-                    <button className="edit-button"><FaEdit /></button>
-                    <button className="delete-button"><FaTimes /></button>
-                  </div>
-                </div>
+                </motion.div>
               ))}
+            </div>
+
+            {/* Add Blog Post Modal (Hidden by default) */}
+            <div className="modal" style={{ display: 'none' }}>
+              <div className="modal-content">
+                <h3>Create New Blog Post</h3>
+                <form className="blog-form">
+                  <div className="form-group">
+                    <label>Title</label>
+                    <input type="text" placeholder="Enter post title" />
+                  </div>
+                  <div className="form-group">
+                    <label>Category</label>
+                    <select>
+                      <option value="development">Development</option>
+                      <option value="design">Design</option>
+                      <option value="backend">Backend</option>
+                      <option value="frontend">Frontend</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>Featured Image</label>
+                    <div className="image-upload">
+                      <div className="upload-area">
+                        <FaImage />
+                        <p>Drag & drop your image here or</p>
+                        <button type="button" className="upload-button">Browse Files</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Content</label>
+                    <textarea placeholder="Write your blog post content..." rows="10" />
+                  </div>
+                  <div className="form-group">
+                    <label>Excerpt</label>
+                    <textarea placeholder="Write a short excerpt..." rows="3" />
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Status</label>
+                      <select>
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label>Publish Date</label>
+                      <input type="date" />
+                    </div>
+                  </div>
+                  <div className="form-actions">
+                    <button type="button" className="cancel-button">Cancel</button>
+                    <button type="submit" className="save-button">Publish Post</button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         );
@@ -623,36 +755,143 @@ const Dashboard = () => {
           <div className="content-section">
             <div className="section-header">
               <h2>Contact Information</h2>
-              <button className="edit-button">
-                <FaEdit /> Edit
-              </button>
+              <div className="header-actions">
+                <button className="edit-button">
+                  <FaEdit /> Edit
+                </button>
+              </div>
             </div>
-            <div className="contact-info">
-              <div className="info-group">
-                <label>Email</label>
-                <input type="email" defaultValue="contact@example.com" />
-              </div>
-              <div className="info-group">
-                <label>Phone</label>
-                <input type="tel" defaultValue="+1 234 567 890" />
-              </div>
-              <div className="info-group">
-                <label>Location</label>
-                <input type="text" defaultValue="New York, USA" />
-              </div>
-              <div className="social-links">
-                <h3>Social Media Links</h3>
-                <div className="info-group">
-                  <label>LinkedIn</label>
-                  <input type="url" defaultValue="https://linkedin.com/in/yourprofile" />
+
+            <div className="contact-grid">
+              <div className="contact-card">
+                <div className="card-header">
+                  <h3>Basic Information</h3>
                 </div>
-                <div className="info-group">
-                  <label>GitHub</label>
-                  <input type="url" defaultValue="https://github.com/yourusername" />
+                <div className="contact-form">
+                  <div className="form-group">
+                    <label>Full Name</label>
+                    <input type="text" defaultValue="Tejas Badhe" />
+                  </div>
+                  <div className="form-group">
+                    <label>Email</label>
+                    <div className="input-with-icon">
+                      <input type="email" defaultValue="contact@example.com" />
+                      <button className="icon-button" title="Copy">
+                        <FaLink />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Phone</label>
+                    <div className="input-with-icon">
+                      <input type="tel" defaultValue="+1 234 567 890" />
+                      <button className="icon-button" title="Copy">
+                        <FaLink />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Location</label>
+                    <input type="text" defaultValue="New York, USA" />
+                  </div>
                 </div>
-                <div className="info-group">
-                  <label>Twitter</label>
-                  <input type="url" defaultValue="https://twitter.com/yourhandle" />
+              </div>
+
+              <div className="contact-card">
+                <div className="card-header">
+                  <h3>Social Media</h3>
+                </div>
+                <div className="social-links">
+                  <div className="social-item">
+                    <div className="social-icon">
+                      <FaLinkedin />
+                    </div>
+                    <div className="social-info">
+                      <label>LinkedIn</label>
+                      <div className="input-with-icon">
+                        <input type="url" defaultValue="https://linkedin.com/in/yourprofile" />
+                        <button className="icon-button" title="Copy">
+                          <FaLink />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="social-item">
+                    <div className="social-icon">
+                      <FaGithub />
+                    </div>
+                    <div className="social-info">
+                      <label>GitHub</label>
+                      <div className="input-with-icon">
+                        <input type="url" defaultValue="https://github.com/yourusername" />
+                        <button className="icon-button" title="Copy">
+                          <FaLink />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="social-item">
+                    <div className="social-icon">
+                      <FaTwitter />
+                    </div>
+                    <div className="social-info">
+                      <label>Twitter</label>
+                      <div className="input-with-icon">
+                        <input type="url" defaultValue="https://twitter.com/yourhandle" />
+                        <button className="icon-button" title="Copy">
+                          <FaLink />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="contact-card">
+                <div className="card-header">
+                  <h3>Contact Form Settings</h3>
+                </div>
+                <div className="form-settings">
+                  <div className="setting-item">
+                    <label className="switch-label">
+                      <span>Enable Contact Form</span>
+                      <div className="toggle-switch">
+                        <input type="checkbox" defaultChecked />
+                        <span className="slider"></span>
+                      </div>
+                    </label>
+                  </div>
+                  <div className="setting-item">
+                    <label className="switch-label">
+                      <span>Email Notifications</span>
+                      <div className="toggle-switch">
+                        <input type="checkbox" defaultChecked />
+                        <span className="slider"></span>
+                      </div>
+                    </label>
+                  </div>
+                  <div className="setting-item">
+                    <label className="switch-label">
+                      <span>Auto-Reply</span>
+                      <div className="toggle-switch">
+                        <input type="checkbox" />
+                        <span className="slider"></span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="contact-card">
+                <div className="card-header">
+                  <h3>Auto-Reply Message</h3>
+                </div>
+                <div className="form-group">
+                  <textarea 
+                    placeholder="Enter your auto-reply message..."
+                    defaultValue="Thank you for reaching out! I'll get back to you as soon as possible."
+                    rows="4"
+                  />
                 </div>
               </div>
             </div>
