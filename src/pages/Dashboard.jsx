@@ -26,7 +26,10 @@ import {
   FaImage,
   FaLink,
   FaAward,
-  FaGraduationCap
+  FaGraduationCap,
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaSearch
 } from 'react-icons/fa';
 import './dashboard.css';
 
@@ -254,33 +257,179 @@ const Dashboard = () => {
           <div className="content-section">
             <div className="section-header">
               <h2>Experience</h2>
-              <button className="add-button">
-                <FaPlus /> Add Experience
-              </button>
+              <div className="header-actions">
+                <button className="add-button">
+                  <FaPlus /> Add Experience
+                </button>
+              </div>
             </div>
-            <div className="experience-list">
+
+            <div className="experience-filters">
+              <div className="search-box">
+                <input type="text" placeholder="Search experiences..." />
+                <FaSearch />
+              </div>
+              <div className="filter-buttons">
+                <button className="filter-button active">All</button>
+                <button className="filter-button">Current</button>
+                <button className="filter-button">Past</button>
+              </div>
+            </div>
+
+            <div className="experience-timeline">
               {[
                 {
-                  title: "Senior Developer",
-                  company: "Tech Corp",
+                  id: 1,
+                  title: "Senior Full Stack Developer",
+                  company: "Tech Innovations Inc.",
                   period: "2022 - Present",
-                  description: "Leading development team..."
+                  location: "New York, USA",
+                  type: "current",
+                  description: "Leading development team in building scalable web applications. Implementing modern technologies and best practices.",
+                  achievements: [
+                    "Reduced application load time by 40%",
+                    "Implemented CI/CD pipeline",
+                    "Mentored junior developers"
+                  ],
+                  technologies: ["React", "Node.js", "AWS", "Docker"]
                 },
-                // Add more experiences
+                {
+                  id: 2,
+                  title: "Full Stack Developer",
+                  company: "Digital Solutions Ltd",
+                  period: "2020 - 2022",
+                  location: "San Francisco, USA",
+                  type: "past",
+                  description: "Developed and maintained multiple client projects. Collaborated with cross-functional teams.",
+                  achievements: [
+                    "Delivered 10+ client projects",
+                    "Improved code quality by 30%",
+                    "Introduced automated testing"
+                  ],
+                  technologies: ["Vue.js", "Python", "MongoDB", "Redis"]
+                }
               ].map((exp, index) => (
-                <div key={index} className="experience-item">
+                <motion.div
+                  key={exp.id}
+                  className={`experience-item ${exp.type}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
                   <div className="experience-header">
-                    <h3>{exp.title}</h3>
+                    <div className="experience-title">
+                      <h3>{exp.title}</h3>
+                      <span className="company">{exp.company}</span>
+                    </div>
                     <div className="experience-actions">
-                      <button className="edit-button"><FaEdit /></button>
-                      <button className="delete-button"><FaTimes /></button>
+                      <button className="edit-button" title="Edit">
+                        <FaEdit />
+                      </button>
+                      <button className="delete-button" title="Delete">
+                        <FaTimes />
+                      </button>
                     </div>
                   </div>
-                  <p className="company">{exp.company}</p>
-                  <p className="period">{exp.period}</p>
-                  <p className="description">{exp.description}</p>
-                </div>
+
+                  <div className="experience-details">
+                    <div className="detail-row">
+                      <div className="detail-item">
+                        <FaCalendarAlt />
+                        <span>{exp.period}</span>
+                      </div>
+                      <div className="detail-item">
+                        <FaMapMarkerAlt />
+                        <span>{exp.location}</span>
+                      </div>
+                    </div>
+
+                    <div className="experience-description">
+                      <p>{exp.description}</p>
+                    </div>
+
+                    <div className="experience-achievements">
+                      <h4>Key Achievements</h4>
+                      <ul>
+                        {exp.achievements.map((achievement, i) => (
+                          <li key={i}>{achievement}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="experience-tech">
+                      <h4>Technologies</h4>
+                      <div className="tech-tags">
+                        {exp.technologies.map((tech, i) => (
+                          <span key={i} className="tech-tag">{tech}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
               ))}
+            </div>
+
+            {/* Add Experience Modal (Hidden by default) */}
+            <div className="modal" style={{ display: 'none' }}>
+              <div className="modal-content">
+                <h3>Add New Experience</h3>
+                <form className="experience-form">
+                  <div className="form-group">
+                    <label>Job Title</label>
+                    <input type="text" placeholder="e.g., Senior Developer" />
+                  </div>
+                  <div className="form-group">
+                    <label>Company</label>
+                    <input type="text" placeholder="e.g., Tech Corp" />
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Start Date</label>
+                      <input type="date" />
+                    </div>
+                    <div className="form-group">
+                      <label>End Date</label>
+                      <input type="date" />
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Location</label>
+                    <input type="text" placeholder="e.g., New York, USA" />
+                  </div>
+                  <div className="form-group">
+                    <label>Description</label>
+                    <textarea placeholder="Describe your role and responsibilities..." />
+                  </div>
+                  <div className="form-group">
+                    <label>Achievements</label>
+                    <div className="achievement-list">
+                      <div className="achievement-item">
+                        <input type="text" placeholder="Add an achievement" />
+                        <button type="button" className="remove-achievement">
+                          <FaTimes />
+                        </button>
+                      </div>
+                    </div>
+                    <button type="button" className="add-achievement">
+                      <FaPlus /> Add Achievement
+                    </button>
+                  </div>
+                  <div className="form-group">
+                    <label>Technologies</label>
+                    <div className="tech-input">
+                      <input type="text" placeholder="Add technologies (press Enter)" />
+                      <div className="tech-tags">
+                        <span className="tech-tag">React <FaTimes /></span>
+                        <span className="tech-tag">Node.js <FaTimes /></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-actions">
+                    <button type="button" className="cancel-button">Cancel</button>
+                    <button type="submit" className="save-button">Save Experience</button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         );
