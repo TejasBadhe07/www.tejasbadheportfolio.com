@@ -17,7 +17,16 @@ import {
   FaStar,
   FaEdit,
   FaPlus,
-  FaComment
+  FaComment,
+  FaLinkedin,
+  FaGithub,
+  FaTwitter,
+  FaDownload,
+  FaSave,
+  FaImage,
+  FaLink,
+  FaAward,
+  FaGraduationCap
 } from 'react-icons/fa';
 import './dashboard.css';
 
@@ -121,30 +130,119 @@ const Dashboard = () => {
           <div className="content-section">
             <div className="section-header">
               <h2>About Section</h2>
-              <button className="edit-button">
-                <FaEdit /> Edit
-              </button>
+              <div className="header-actions">
+                <button className="save-button">
+                  <FaSave /> Save Changes
+                </button>
+              </div>
             </div>
+            
+            <div className="about-tabs">
+              <button className="tab-button active">Profile</button>
+              <button className="tab-button">Education</button>
+              <button className="tab-button">Awards</button>
+            </div>
+
             <div className="about-content">
               <div className="profile-section">
                 <div className="profile-image">
-                  <img src="/path-to-your-image.jpg" alt="Profile" />
-                  <button className="change-image">
-                    <FaEdit /> Change Image
-                  </button>
+                  <div className="image-container">
+                    <img src="/path-to-your-image.jpg" alt="Profile" />
+                    <div className="image-overlay">
+                      <button className="change-image">
+                        <FaImage /> Change Photo
+                      </button>
+                    </div>
+                  </div>
+                  <div className="profile-stats">
+                    <div className="stat">
+                      <span className="stat-value">5+</span>
+                      <span className="stat-label">Years Experience</span>
+                    </div>
+                    <div className="stat">
+                      <span className="stat-value">50+</span>
+                      <span className="stat-label">Projects</span>
+                    </div>
+                    <div className="stat">
+                      <span className="stat-value">100%</span>
+                      <span className="stat-label">Satisfaction</span>
+                    </div>
+                  </div>
                 </div>
+
                 <div className="profile-info">
-                  <div className="info-group">
-                    <label>Full Name</label>
-                    <input type="text" defaultValue="Tejas Badhe" />
+                  <div className="info-section">
+                    <h3>Basic Information</h3>
+                    <div className="info-grid">
+                      <div className="info-group">
+                        <label>Full Name</label>
+                        <input type="text" defaultValue="Tejas Badhe" />
+                      </div>
+                      <div className="info-group">
+                        <label>Title</label>
+                        <input type="text" defaultValue="Full Stack Developer" />
+                      </div>
+                      <div className="info-group">
+                        <label>Location</label>
+                        <input type="text" defaultValue="New York, USA" />
+                      </div>
+                      <div className="info-group">
+                        <label>Email</label>
+                        <input type="email" defaultValue="contact@example.com" />
+                      </div>
+                    </div>
                   </div>
-                  <div className="info-group">
-                    <label>Title</label>
-                    <input type="text" defaultValue="Full Stack Developer" />
+
+                  <div className="info-section">
+                    <h3>Bio</h3>
+                    <div className="info-group">
+                      <textarea 
+                        defaultValue="Passionate developer with expertise in web development. Specializing in React, Node.js, and modern web technologies. Always eager to learn and adapt to new challenges."
+                        rows="4"
+                      />
+                    </div>
                   </div>
-                  <div className="info-group">
-                    <label>Bio</label>
-                    <textarea defaultValue="Passionate developer with expertise in web development..." />
+
+                  <div className="info-section">
+                    <h3>Social Links</h3>
+                    <div className="social-links-grid">
+                      <div className="info-group">
+                        <label><FaLinkedin /> LinkedIn</label>
+                        <div className="input-with-icon">
+                          <input type="url" defaultValue="https://linkedin.com/in/yourprofile" />
+                          <button className="icon-button"><FaLink /></button>
+                        </div>
+                      </div>
+                      <div className="info-group">
+                        <label><FaGithub /> GitHub</label>
+                        <div className="input-with-icon">
+                          <input type="url" defaultValue="https://github.com/yourusername" />
+                          <button className="icon-button"><FaLink /></button>
+                        </div>
+                      </div>
+                      <div className="info-group">
+                        <label><FaTwitter /> Twitter</label>
+                        <div className="input-with-icon">
+                          <input type="url" defaultValue="https://twitter.com/yourhandle" />
+                          <button className="icon-button"><FaLink /></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="info-section">
+                    <h3>Resume</h3>
+                    <div className="resume-upload">
+                      <div className="upload-area">
+                        <FaDownload />
+                        <p>Drag & drop your resume here or</p>
+                        <button className="upload-button">Browse Files</button>
+                      </div>
+                      <div className="current-resume">
+                        <span>Current: resume.pdf</span>
+                        <button className="download-button"><FaDownload /></button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
