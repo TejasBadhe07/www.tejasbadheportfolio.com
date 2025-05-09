@@ -5,9 +5,11 @@ import ME from '../../assets/images/Photo1.jpeg'
 import { FaArrowDown } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import TopSocials from './TopSocials'
+import { usePortfolio } from '../../context/PortfolioContext'
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const { portfolioData } = usePortfolio();
 
   useEffect(() => {
     setIsVisible(true);
@@ -25,12 +27,12 @@ const Header = () => {
         >
           <h5 className="header__subtitle">Hello I'm</h5>
           <h1 className="header__title">
-            <span className="highlight">Tejas</span>
+            <span className="highlight">{portfolioData?.about?.name || 'Tejas'}</span>
             <span className="wave">👋</span>
           </h1>
-          <h5 className="header__subtitle text-light">Software Developer</h5>
+          <h5 className="header__subtitle text-light">{portfolioData?.about?.title || 'Software Developer'}</h5>
           <p className="header__description">
-            Passionate about creating innovative solutions with modern web technologies
+            {portfolioData?.about?.bio || 'Passionate about creating innovative solutions with modern web technologies'}
           </p>
           <CTA />
         </motion.div>
@@ -45,7 +47,7 @@ const Header = () => {
             <img src={ME} alt="me" />
             <div className="me__overlay">
               <div className="me__overlay-content">
-                <span>Software Developer</span>
+                <span>{portfolioData?.about?.title || 'Software Developer'}</span>
                 <span>AI/ML Enthusiast</span>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   FaHome, 
@@ -31,6 +31,7 @@ import {
   FaMapMarkerAlt,
   FaSearch
 } from 'react-icons/fa';
+import { usePortfolio } from '../context/PortfolioContext';
 import './dashboard.css';
 
 const Dashboard = () => {
@@ -39,6 +40,22 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const mainContentRef = useRef(null);
+  const { section = 'overview' } = useParams();
+  const { portfolioData, updatePortfolioSection } = usePortfolio();
+  const [formData, setFormData] = useState({
+    name: '',
+    title: '',
+    location: '',
+    email: '',
+    bio: '',
+    social: {
+      linkedin: '',
+      github: '',
+      twitter: ''
+    }
+  });
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [pendingChanges, setPendingChanges] = useState(null);
 
   useEffect(() => {
     // Check if user is authenticated
@@ -52,7 +69,22 @@ const Dashboard = () => {
     if (path && path !== 'home') {
       setActiveSection(path);
     }
-  }, [navigate, location]);
+
+    if (portfolioData?.about) {
+      setFormData({
+        name: portfolioData.about.name || '',
+        title: portfolioData.about.title || '',
+        location: portfolioData.about.location || '',
+        email: portfolioData.about.email || '',
+        bio: portfolioData.about.bio || '',
+        social: {
+          linkedin: portfolioData.about.social?.linkedin || '',
+          github: portfolioData.about.social?.github || '',
+          twitter: portfolioData.about.social?.twitter || ''
+        }
+      });
+    }
+  }, [navigate, location, portfolioData]);
 
   const handleSectionChange = (sectionId) => {
     // Save current scroll position before changing section
@@ -81,6 +113,46 @@ const Dashboard = () => {
     navigate('/dashboard');
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (name.startsWith('social.')) {
+      const socialPlatform = name.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        social: {
+          ...prev.social,
+          [socialPlatform]: value
+        }
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
+
+  const handleSave = () => {
+    setPendingChanges({
+      ...portfolioData.about,
+      ...formData
+    });
+    setShowConfirmDialog(true);
+  };
+
+  const confirmSave = () => {
+    if (pendingChanges) {
+      updatePortfolioSection('about', pendingChanges);
+      setShowConfirmDialog(false);
+      setPendingChanges(null);
+    }
+  };
+
+  const cancelSave = () => {
+    setShowConfirmDialog(false);
+    setPendingChanges(null);
+  };
+
   const menuItems = [
     { id: 'home', icon: <FaHome />, label: 'Dashboard' },
     { id: 'about', icon: <FaUser />, label: 'About' },
@@ -104,8 +176,8 @@ const Dashboard = () => {
   ];
 
   const renderContent = () => {
-    switch (activeSection) {
-      case 'home':
+    switch (section) {
+      case 'overview':
         return (
           <div className="dashboard-overview">
             <div className="overview-header">
@@ -305,31 +377,55 @@ const Dashboard = () => {
                     <div className="info-grid">
                       <div className="info-group">
                         <label>Full Name</label>
-                        <input type="text" defaultValue="Tejas Badhe" />
+                        <input 
+                          type="text" 
+                          name="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                        />
                       </div>
                       <div className="info-group">
                         <label>Title</label>
-                        <input type="text" defaultValue="Full Stack Developer" />
+                        <input 
+                          type="text" 
+                          name="title"
+                          value={formData.title}
+                          onChange={handleInputChange}
+                        />
                       </div>
                       <div className="info-group">
                         <label>Location</label>
-                        <input type="text" defaultValue="New York, USA" />
+                        <input 
+                          type="text" 
+                          name="location"
+                          value={formData.location}
+                          onChange={handleInputChange}
+                        />
                       </div>
                       <div className="info-group">
                         <label>Email</label>
-                        <input type="email" defaultValue="contact@example.com" />
+                        <input 
+                          type="email" 
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                        />
                       </div>
                     </div>
+                    <button className="save-button" onClick={handleSave}>Save Changes</button>
                   </div>
 
                   <div className="info-section">
                     <h3>Bio</h3>
                     <div className="info-group">
                       <textarea 
-                        defaultValue="Passionate developer with expertise in web development. Specializing in React, Node.js, and modern web technologies. Always eager to learn and adapt to new challenges."
+                        name="bio"
+                        value={formData.bio}
+                        onChange={handleInputChange}
                         rows="4"
                       />
                     </div>
+                    <button className="save-button" onClick={handleSave}>Save Changes</button>
                   </div>
 
                   <div className="info-section">
@@ -338,25 +434,41 @@ const Dashboard = () => {
                       <div className="info-group">
                         <label><FaLinkedin /> LinkedIn</label>
                         <div className="input-with-icon">
-                          <input type="url" defaultValue="https://linkedin.com/in/yourprofile" />
+                          <input 
+                            type="url" 
+                            name="social.linkedin"
+                            value={formData.social.linkedin}
+                            onChange={handleInputChange}
+                          />
                           <button className="icon-button"><FaLink /></button>
                         </div>
                       </div>
                       <div className="info-group">
                         <label><FaGithub /> GitHub</label>
                         <div className="input-with-icon">
-                          <input type="url" defaultValue="https://github.com/yourusername" />
+                          <input 
+                            type="url" 
+                            name="social.github"
+                            value={formData.social.github}
+                            onChange={handleInputChange}
+                          />
                           <button className="icon-button"><FaLink /></button>
                         </div>
                       </div>
                       <div className="info-group">
                         <label><FaTwitter /> Twitter</label>
                         <div className="input-with-icon">
-                          <input type="url" defaultValue="https://twitter.com/yourhandle" />
+                          <input 
+                            type="url" 
+                            name="social.twitter"
+                            value={formData.social.twitter}
+                            onChange={handleInputChange}
+                          />
                           <button className="icon-button"><FaLink /></button>
                         </div>
                       </div>
                     </div>
+                    <button className="save-button" onClick={handleSave}>Save Changes</button>
                   </div>
 
                   <div className="info-section">
@@ -1081,6 +1193,20 @@ const Dashboard = () => {
       <main className="dashboard-main" ref={mainContentRef}>
         {renderContent()}
       </main>
+
+      {/* Confirmation Dialog */}
+      {showConfirmDialog && (
+        <div className="modal-overlay">
+          <div className="modal-content confirmation-dialog">
+            <h3>Confirm Changes</h3>
+            <p>Are you sure you want to save these changes? This will update your portfolio information.</p>
+            <div className="dialog-actions">
+              <button className="cancel-button" onClick={cancelSave}>Cancel</button>
+              <button className="confirm-button" onClick={confirmSave}>Save Changes</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

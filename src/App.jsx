@@ -13,6 +13,7 @@ import Testimonials from './components/testimonials/Testimonials';
 import Contact from './components/contact/Contact';
 import Footer from './components/footer/Footer';
 import { ThemeProvider } from './context/ThemeContext';
+import { PortfolioProvider } from './context/PortfolioContext';
 import Loading from './components/loading/Loading';
 import ScrollProgress from './components/scrollProgress/ScrollProgress';
 import Login from './pages/Login';
@@ -68,37 +69,39 @@ const App = () => {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <ThemeProvider>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <Routes>
-            <Route path="/" element={<MainContent />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/dashboard" element={<Login />} />
-            <Route 
-              path="/dashboard/:section" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route path="*" element={
-              <div style={{ 
-                height: '100vh', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                flexDirection: 'column',
-                gap: '1rem'
-              }}>
-                <h1>Page Not Found</h1>
-                <a href="/" style={{ color: 'var(--color-primary)' }}>Go Back Home</a>
-              </div>
-            } />
-          </Routes>
-        )}
+        <PortfolioProvider>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Routes>
+              <Route path="/" element={<MainContent />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/dashboard" element={<Login />} />
+              <Route 
+                path="/dashboard/:section" 
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route path="*" element={
+                <div style={{ 
+                  height: '100vh', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  gap: '1rem'
+                }}>
+                  <h1>Page Not Found</h1>
+                  <a href="/" style={{ color: 'var(--color-primary)' }}>Go Back Home</a>
+                </div>
+              } />
+            </Routes>
+          )}
+        </PortfolioProvider>
       </ThemeProvider>
     </BrowserRouter>
   );
