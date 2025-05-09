@@ -105,18 +105,19 @@ const Dashboard = () => {
 
   const renderContent = () => {
     switch (activeSection) {
-      case 'dashboard':
+      case 'home':
         return (
           <div className="dashboard-overview">
             <div className="overview-header">
               <div className="header-left">
-                <h1>Dashboard</h1>
-                <p className="header-subtitle">Welcome back to your dashboard</p>
+                <h1>Welcome Back!</h1>
+                <p className="header-subtitle">Here's what's happening with your portfolio</p>
               </div>
               <div className="welcome-text">
                 <FaUser /> Admin
               </div>
             </div>
+
             <div className="stats-grid">
               {stats.map((stat, index) => (
                 <motion.div
@@ -136,24 +137,119 @@ const Dashboard = () => {
                 </motion.div>
               ))}
             </div>
-            <div className="recent-activity">
-              <h2>Recent Activity</h2>
-              <div className="activity-list">
-                {recentActivities.map((activity) => (
-                  <motion.div
-                    key={activity.id}
-                    className="activity-item"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 }}
+
+            <div className="dashboard-grid">
+              <div className="recent-activity">
+                <div className="section-header">
+                  <h2>Recent Activity</h2>
+                  <button className="view-all">View All</button>
+                </div>
+                <div className="activity-list">
+                  {recentActivities.map((activity) => (
+                    <motion.div
+                      key={activity.id}
+                      className="activity-item"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <div className="activity-icon">{activity.icon}</div>
+                      <div className="activity-details">
+                        <h4>{activity.action}</h4>
+                        <span>{activity.time}</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="quick-actions">
+                <div className="section-header">
+                  <h2>Quick Actions</h2>
+                </div>
+                <div className="actions-grid">
+                  <motion.button
+                    className="action-card"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleSectionChange('blog')}
                   >
-                    <div className="activity-icon">{activity.icon}</div>
-                    <div className="activity-details">
-                      <h4>{activity.action}</h4>
-                      <span>{activity.time}</span>
+                    <FaBlog />
+                    <span>New Blog Post</span>
+                  </motion.button>
+                  <motion.button
+                    className="action-card"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleSectionChange('experience')}
+                  >
+                    <FaBriefcase />
+                    <span>Add Experience</span>
+                  </motion.button>
+                  <motion.button
+                    className="action-card"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleSectionChange('skills')}
+                  >
+                    <FaCode />
+                    <span>Update Skills</span>
+                  </motion.button>
+                  <motion.button
+                    className="action-card"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleSectionChange('about')}
+                  >
+                    <FaUser />
+                    <span>Edit Profile</span>
+                  </motion.button>
+                </div>
+              </div>
+            </div>
+
+            <div className="performance-section">
+              <div className="section-header">
+                <h2>Portfolio Performance</h2>
+                <div className="time-filter">
+                  <button className="active">Week</button>
+                  <button>Month</button>
+                  <button>Year</button>
+                </div>
+              </div>
+              <div className="performance-grid">
+                <div className="performance-card">
+                  <h3>Page Views</h3>
+                  <div className="performance-chart">
+                    {/* Placeholder for chart */}
+                    <div className="chart-placeholder">
+                      <div className="chart-bar" style={{ height: '60%' }}></div>
+                      <div className="chart-bar" style={{ height: '80%' }}></div>
+                      <div className="chart-bar" style={{ height: '40%' }}></div>
+                      <div className="chart-bar" style={{ height: '90%' }}></div>
+                      <div className="chart-bar" style={{ height: '70%' }}></div>
+                      <div className="chart-bar" style={{ height: '50%' }}></div>
+                      <div className="chart-bar" style={{ height: '85%' }}></div>
                     </div>
-                  </motion.div>
-                ))}
+                  </div>
+                </div>
+                <div className="performance-card">
+                  <h3>Engagement</h3>
+                  <div className="engagement-stats">
+                    <div className="engagement-item">
+                      <span className="label">Comments</span>
+                      <span className="value">24</span>
+                    </div>
+                    <div className="engagement-item">
+                      <span className="label">Shares</span>
+                      <span className="value">12</span>
+                    </div>
+                    <div className="engagement-item">
+                      <span className="label">Contact Form</span>
+                      <span className="value">8</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
