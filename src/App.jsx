@@ -77,7 +77,7 @@ const App = () => {
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/dashboard" element={<Login />} />
             <Route 
-              path="/dashboard/home" 
+              path="/dashboard/:section" 
               element={
                 <ProtectedRoute>
                   <Dashboard />

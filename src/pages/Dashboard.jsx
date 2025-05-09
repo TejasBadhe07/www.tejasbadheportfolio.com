@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   FaHome, 
@@ -35,8 +35,10 @@ import './dashboard.css';
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [activeSection, setActiveSection] = useState('dashboard');
+  const [activeSection, setActiveSection] = useState('home');
   const navigate = useNavigate();
+  const location = useLocation();
+  const mainContentRef = useRef(null);
 
   useEffect(() => {
     // Check if user is authenticated
@@ -44,7 +46,35 @@ const Dashboard = () => {
     if (!isAuthenticated) {
       navigate('/dashboard');
     }
-  }, [navigate]);
+
+    // Get the current section from the URL path
+    const path = location.pathname.split('/').pop();
+    if (path && path !== 'home') {
+      setActiveSection(path);
+    }
+  }, [navigate, location]);
+
+  const handleSectionChange = (sectionId) => {
+    // Save current scroll position before changing section
+    if (mainContentRef.current) {
+      localStorage.setItem('dashboardScrollPosition', mainContentRef.current.scrollTop);
+    }
+    
+    setActiveSection(sectionId);
+    navigate(`/dashboard/${sectionId}`);
+  };
+
+  // Restore scroll position after content render
+  useEffect(() => {
+    if (mainContentRef.current) {
+      const savedPosition = localStorage.getItem('dashboardScrollPosition');
+      if (savedPosition) {
+        mainContentRef.current.scrollTop = parseInt(savedPosition);
+        // Clear the saved position after restoring
+        localStorage.removeItem('dashboardScrollPosition');
+      }
+    }
+  }, [activeSection]);
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
@@ -930,7 +960,7 @@ const Dashboard = () => {
             <motion.button
               key={item.id}
               className={`nav-item ${activeSection === item.id ? 'active' : ''}`}
-              onClick={() => setActiveSection(item.id)}
+              onClick={() => handleSectionChange(item.id)}
               whileHover={{ x: 5 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -952,7 +982,7 @@ const Dashboard = () => {
       </motion.aside>
 
       {/* Main Content */}
-      <main className="dashboard-main">
+      <main className="dashboard-main" ref={mainContentRef}>
         {renderContent()}
       </main>
     </div>
