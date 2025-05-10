@@ -11,6 +11,7 @@
     z-index: 1000;
     padding: 1rem;
     overflow-y: auto;
+    backdrop-filter: blur(5px);
 }
 
 .modal-content {
@@ -23,6 +24,7 @@
     max-height: 90vh;
     overflow-y: auto;
     border: 1px solid var(--color-primary-variant);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .modal-close {
@@ -56,6 +58,7 @@
 .modal-header h2 {
     color: var(--color-white);
     margin-bottom: 0.5rem;
+    font-size: 2rem;
 }
 
 .project-category {
@@ -67,6 +70,43 @@
     font-size: 0.9rem;
 }
 
+.modal-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    color: var(--color-light);
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+    color: var(--color-white);
+}
+
+.tab-button.active {
+    color: var(--color-primary);
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--color-primary);
+}
+
 .modal-body {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -76,12 +116,18 @@
 .modal-image {
     border-radius: 1rem;
     overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .modal-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.modal-image:hover img {
+    transform: scale(1.05);
 }
 
 .modal-details {
@@ -93,6 +139,7 @@
 .modal-details h3 {
     color: var(--color-white);
     margin-bottom: 0.5rem;
+    font-size: 1.2rem;
 }
 
 .project-description p {
@@ -112,6 +159,12 @@
     padding: 0.3rem 0.8rem;
     border-radius: 1rem;
     font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.tech-tag:hover {
+    transform: translateY(-2px);
+    background: var(--color-primary);
 }
 
 .project-features ul {
@@ -133,6 +186,33 @@
     left: 0;
 }
 
+.project-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--color-bg-variant);
+    border-radius: 1rem;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.meta-item svg {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+}
+
+.meta-item span {
+    color: var(--color-light);
+    font-size: 0.9rem;
+}
+
 .project-links {
     display: flex;
     gap: 1rem;
@@ -142,9 +222,130 @@
 .project-links .btn {
     flex: 1;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
-/* ==================================== MEDIA QUERIES (MEDIUM DEVICE) ===================================================== */
+/* Challenges & Solutions Section */
+.challenges-section {
+    grid-column: 1 / -1;
+}
+
+.challenges-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.challenges-column, .solutions-column {
+    background: var(--color-bg-variant);
+    padding: 1.5rem;
+    border-radius: 1rem;
+}
+
+.challenges-column h3, .solutions-column h3 {
+    color: var(--color-white);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.challenges-column ul, .solutions-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.challenges-column li, .solutions-column li {
+    color: var(--color-light);
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.challenges-column li::before {
+    content: "•";
+    color: var(--color-primary);
+    position: absolute;
+    left: 0;
+}
+
+/* Gallery Section */
+.gallery-section {
+    grid-column: 1 / -1;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery-item {
+    background: var(--color-bg-variant);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.gallery-item p {
+    padding: 1rem;
+    color: var(--color-light);
+    text-align: center;
+    margin: 0;
+}
+
+/* Impact Section */
+.impact-section {
+    grid-column: 1 / -1;
+}
+
+.impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.impact-card {
+    background: var(--color-bg-variant);
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.impact-card:hover {
+    transform: translateY(-5px);
+}
+
+.impact-card svg {
+    font-size: 2rem;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+}
+
+.impact-card h4 {
+    color: var(--color-white);
+    margin-bottom: 0.5rem;
+}
+
+.impact-card p {
+    color: var(--color-light);
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* Responsive Design */
 @media screen and (max-width: 768px) {
     .modal-body {
         grid-template-columns: 1fr;
@@ -153,15 +354,41 @@
     .modal-content {
         padding: 1.5rem;
     }
-}
 
-/* ==================================== MEDIA QUERIES (SMALL DEVICE) ===================================================== */
-@media screen and (max-width: 600px) {
-    .modal-content {
-        padding: 1rem;
+    .challenges-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .impact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-meta {
+        grid-template-columns: 1fr;
     }
 
     .project-links {
         flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modal-content {
+        padding: 1rem;
+    }
+
+    .modal-tabs {
+        flex-wrap: wrap;
+    }
+
+    .tab-button {
+        flex: 1;
+        text-align: center;
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
     }
 } 

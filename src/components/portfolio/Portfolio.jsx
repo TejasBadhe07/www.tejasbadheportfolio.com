@@ -29,7 +29,37 @@ const data = [
       'Fine calculation and payment tracking',
       'Search and filter functionality',
       'Reports generation'
-    ]
+    ],
+    challenges: [
+      'Implementing real-time updates for book availability',
+      'Designing an efficient search algorithm',
+      'Managing concurrent user sessions'
+    ],
+    solutions: [
+      'Used WebSocket for real-time updates',
+      'Implemented Elasticsearch for fast search',
+      'Utilized Redis for session management'
+    ],
+    impact: {
+      users: '500+',
+      efficiency: '40% improvement',
+      satisfaction: '95% positive feedback'
+    },
+    screenshots: [
+      { url: IMG1, caption: 'Dashboard Overview' },
+      { url: IMG2, caption: 'Book Management' },
+      { url: IMG3, caption: 'User Interface' }
+    ],
+    timeline: {
+      start: 'Jan 2023',
+      end: 'Mar 2023',
+      duration: '3 months'
+    },
+    role: 'Full Stack Developer',
+    team: {
+      size: 3,
+      roles: ['Frontend Developer', 'Backend Developer', 'UI/UX Designer']
+    }
   },
 
   {
