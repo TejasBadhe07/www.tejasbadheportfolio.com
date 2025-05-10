@@ -56,6 +56,20 @@ const Dashboard = () => {
   });
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [pendingChanges, setPendingChanges] = useState(null);
+  const [showExperienceModal, setShowExperienceModal] = useState(false);
+  const [editingExperience, setEditingExperience] = useState(null);
+  const [experienceForm, setExperienceForm] = useState({
+    title: '',
+    company: '',
+    period: '',
+    location: '',
+    type: 'current',
+    description: '',
+    achievements: [''],
+    technologies: []
+  });
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState('all');
 
   useEffect(() => {
     // Check if user is authenticated
@@ -152,6 +166,121 @@ const Dashboard = () => {
     setShowConfirmDialog(false);
     setPendingChanges(null);
   };
+
+  const handleExperienceInputChange = (e) => {
+    const { name, value } = e.target;
+    setExperienceForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleAchievementChange = (index, value) => {
+    const newAchievements = [...experienceForm.achievements];
+    newAchievements[index] = value;
+    setExperienceForm(prev => ({
+      ...prev,
+      achievements: newAchievements
+    }));
+  };
+
+  const addAchievement = () => {
+    setExperienceForm(prev => ({
+      ...prev,
+      achievements: [...prev.achievements, '']
+    }));
+  };
+
+  const removeAchievement = (index) => {
+    const newAchievements = experienceForm.achievements.filter((_, i) => i !== index);
+    setExperienceForm(prev => ({
+      ...prev,
+      achievements: newAchievements
+    }));
+  };
+
+  const handleTechnologyChange = (e) => {
+    if (e.key === 'Enter' && e.target.value.trim()) {
+      e.preventDefault();
+      const newTech = e.target.value.trim();
+      if (!experienceForm.technologies.includes(newTech)) {
+        setExperienceForm(prev => ({
+          ...prev,
+          technologies: [...prev.technologies, newTech]
+        }));
+      }
+      e.target.value = '';
+    }
+  };
+
+  const removeTechnology = (techToRemove) => {
+    setExperienceForm(prev => ({
+      ...prev,
+      technologies: prev.technologies.filter(tech => tech !== techToRemove)
+    }));
+  };
+
+  const handleAddExperience = () => {
+    setEditingExperience(null);
+    setExperienceForm({
+      title: '',
+      company: '',
+      period: '',
+      location: '',
+      type: 'current',
+      description: '',
+      achievements: [''],
+      technologies: []
+    });
+    setShowExperienceModal(true);
+  };
+
+  const handleEditExperience = (experience) => {
+    setEditingExperience(experience);
+    setExperienceForm({
+      ...experience,
+      achievements: experience.achievements.length ? experience.achievements : ['']
+    });
+    setShowExperienceModal(true);
+  };
+
+  const handleDeleteExperience = (experienceId) => {
+    const updatedExperiences = portfolioData.experience.filter(exp => exp.id !== experienceId);
+    updatePortfolioSection('experience', updatedExperiences);
+  };
+
+  const handleSaveExperience = () => {
+    const newExperience = {
+      ...experienceForm,
+      id: editingExperience?.id || Date.now(),
+      achievements: experienceForm.achievements.filter(achievement => achievement.trim() !== '')
+    };
+
+    let updatedExperiences;
+    if (editingExperience) {
+      updatedExperiences = portfolioData.experience.map(exp => 
+        exp.id === editingExperience.id ? newExperience : exp
+      );
+    } else {
+      updatedExperiences = [...portfolioData.experience, newExperience];
+    }
+
+    updatePortfolioSection('experience', updatedExperiences);
+    setShowExperienceModal(false);
+    setEditingExperience(null);
+  };
+
+  const filteredExperiences = portfolioData?.experience?.filter(exp => {
+    const matchesSearch = exp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      exp.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      exp.description.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesFilter = activeFilter === 'all' || 
+      (activeFilter === 'current' && exp.type === 'current') ||
+      (activeFilter === 'past' && exp.type === 'past');
+
+    return matchesSearch && matchesFilter;
+  }) || [];
 
   const menuItems = [
     { id: 'home', icon: <FaHome />, label: 'Dashboard' },
@@ -496,7 +625,7 @@ const Dashboard = () => {
             <div className="section-header">
               <h2>Experience</h2>
               <div className="header-actions">
-                <button className="add-button">
+                <button className="add-button" onClick={handleAddExperience}>
                   <FaPlus /> Add Experience
                 </button>
               </div>
@@ -504,49 +633,38 @@ const Dashboard = () => {
 
             <div className="experience-filters">
               <div className="search-box">
-                <input type="text" placeholder="Search experiences..." />
+                <input 
+                  type="text" 
+                  placeholder="Search experiences..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
                 <FaSearch />
               </div>
               <div className="filter-buttons">
-                <button className="filter-button active">All</button>
-                <button className="filter-button">Current</button>
-                <button className="filter-button">Past</button>
+                <button 
+                  className={`filter-button ${activeFilter === 'all' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('all')}
+                >
+                  All
+                </button>
+                <button 
+                  className={`filter-button ${activeFilter === 'current' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('current')}
+                >
+                  Current
+                </button>
+                <button 
+                  className={`filter-button ${activeFilter === 'past' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('past')}
+                >
+                  Past
+                </button>
               </div>
             </div>
 
             <div className="experience-timeline">
-              {[
-                {
-                  id: 1,
-                  title: "Senior Full Stack Developer",
-                  company: "Tech Innovations Inc.",
-                  period: "2022 - Present",
-                  location: "New York, USA",
-                  type: "current",
-                  description: "Leading development team in building scalable web applications. Implementing modern technologies and best practices.",
-                  achievements: [
-                    "Reduced application load time by 40%",
-                    "Implemented CI/CD pipeline",
-                    "Mentored junior developers"
-                  ],
-                  technologies: ["React", "Node.js", "AWS", "Docker"]
-                },
-                {
-                  id: 2,
-                  title: "Full Stack Developer",
-                  company: "Digital Solutions Ltd",
-                  period: "2020 - 2022",
-                  location: "San Francisco, USA",
-                  type: "past",
-                  description: "Developed and maintained multiple client projects. Collaborated with cross-functional teams.",
-                  achievements: [
-                    "Delivered 10+ client projects",
-                    "Improved code quality by 30%",
-                    "Introduced automated testing"
-                  ],
-                  technologies: ["Vue.js", "Python", "MongoDB", "Redis"]
-                }
-              ].map((exp, index) => (
+              {filteredExperiences.map((exp, index) => (
                 <motion.div
                   key={exp.id}
                   className={`experience-item ${exp.type}`}
@@ -560,10 +678,18 @@ const Dashboard = () => {
                       <span className="company">{exp.company}</span>
                     </div>
                     <div className="experience-actions">
-                      <button className="edit-button" title="Edit">
+                      <button 
+                        className="edit-button" 
+                        title="Edit"
+                        onClick={() => handleEditExperience(exp)}
+                      >
                         <FaEdit />
                       </button>
-                      <button className="delete-button" title="Delete">
+                      <button 
+                        className="delete-button" 
+                        title="Delete"
+                        onClick={() => handleDeleteExperience(exp.id)}
+                      >
                         <FaTimes />
                       </button>
                     </div>
@@ -607,68 +733,147 @@ const Dashboard = () => {
               ))}
             </div>
 
-            {/* Add Experience Modal (Hidden by default) */}
-            <div className="modal" style={{ display: 'none' }}>
-              <div className="modal-content">
-                <h3>Add New Experience</h3>
-                <form className="experience-form">
-                  <div className="form-group">
-                    <label>Job Title</label>
-                    <input type="text" placeholder="e.g., Senior Developer" />
-                  </div>
-                  <div className="form-group">
-                    <label>Company</label>
-                    <input type="text" placeholder="e.g., Tech Corp" />
-                  </div>
-                  <div className="form-row">
+            {/* Experience Modal */}
+            {showExperienceModal && (
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  <h3>{editingExperience ? 'Edit Experience' : 'Add New Experience'}</h3>
+                  <form className="experience-form" onSubmit={(e) => { e.preventDefault(); handleSaveExperience(); }}>
                     <div className="form-group">
-                      <label>Start Date</label>
-                      <input type="date" />
+                      <label>Job Title</label>
+                      <input 
+                        type="text" 
+                        name="title"
+                        value={experienceForm.title}
+                        onChange={handleExperienceInputChange}
+                        placeholder="e.g., Senior Developer" 
+                        required
+                      />
                     </div>
                     <div className="form-group">
-                      <label>End Date</label>
-                      <input type="date" />
+                      <label>Company</label>
+                      <input 
+                        type="text" 
+                        name="company"
+                        value={experienceForm.company}
+                        onChange={handleExperienceInputChange}
+                        placeholder="e.g., Tech Corp" 
+                        required
+                      />
                     </div>
-                  </div>
-                  <div className="form-group">
-                    <label>Location</label>
-                    <input type="text" placeholder="e.g., New York, USA" />
-                  </div>
-                  <div className="form-group">
-                    <label>Description</label>
-                    <textarea placeholder="Describe your role and responsibilities..." />
-                  </div>
-                  <div className="form-group">
-                    <label>Achievements</label>
-                    <div className="achievement-list">
-                      <div className="achievement-item">
-                        <input type="text" placeholder="Add an achievement" />
-                        <button type="button" className="remove-achievement">
-                          <FaTimes />
-                        </button>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Period</label>
+                        <input 
+                          type="text" 
+                          name="period"
+                          value={experienceForm.period}
+                          onChange={handleExperienceInputChange}
+                          placeholder="e.g., 2020 - Present" 
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Location</label>
+                        <input 
+                          type="text" 
+                          name="location"
+                          value={experienceForm.location}
+                          onChange={handleExperienceInputChange}
+                          placeholder="e.g., New York, USA" 
+                          required
+                        />
                       </div>
                     </div>
-                    <button type="button" className="add-achievement">
-                      <FaPlus /> Add Achievement
-                    </button>
-                  </div>
-                  <div className="form-group">
-                    <label>Technologies</label>
-                    <div className="tech-input">
-                      <input type="text" placeholder="Add technologies (press Enter)" />
-                      <div className="tech-tags">
-                        <span className="tech-tag">React <FaTimes /></span>
-                        <span className="tech-tag">Node.js <FaTimes /></span>
+                    <div className="form-group">
+                      <label>Type</label>
+                      <select 
+                        name="type"
+                        value={experienceForm.type}
+                        onChange={handleExperienceInputChange}
+                      >
+                        <option value="current">Current</option>
+                        <option value="past">Past</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label>Description</label>
+                      <textarea 
+                        name="description"
+                        value={experienceForm.description}
+                        onChange={handleExperienceInputChange}
+                        placeholder="Describe your role and responsibilities..." 
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Achievements</label>
+                      <div className="achievement-list">
+                        {experienceForm.achievements.map((achievement, index) => (
+                          <div key={index} className="achievement-item">
+                            <input 
+                              type="text" 
+                              value={achievement}
+                              onChange={(e) => handleAchievementChange(index, e.target.value)}
+                              placeholder="Add an achievement" 
+                            />
+                            <button 
+                              type="button" 
+                              className="remove-achievement"
+                              onClick={() => removeAchievement(index)}
+                            >
+                              <FaTimes />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                      <button 
+                        type="button" 
+                        className="add-achievement"
+                        onClick={addAchievement}
+                      >
+                        <FaPlus /> Add Achievement
+                      </button>
+                    </div>
+                    <div className="form-group">
+                      <label>Technologies</label>
+                      <div className="tech-input">
+                        <input 
+                          type="text" 
+                          placeholder="Add technologies (press Enter)" 
+                          onKeyDown={handleTechnologyChange}
+                        />
+                        <div className="tech-tags">
+                          {experienceForm.technologies.map((tech, i) => (
+                            <span key={i} className="tech-tag">
+                              {tech} 
+                              <button 
+                                type="button" 
+                                onClick={() => removeTechnology(tech)}
+                              >
+                                <FaTimes />
+                              </button>
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="form-actions">
-                    <button type="button" className="cancel-button">Cancel</button>
-                    <button type="submit" className="save-button">Save Experience</button>
-                  </div>
-                </form>
+                    <div className="form-actions">
+                      <button 
+                        type="button" 
+                        className="cancel-button"
+                        onClick={() => setShowExperienceModal(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button type="submit" className="save-button">
+                        {editingExperience ? 'Update Experience' : 'Save Experience'}
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         );
       case 'skills':
