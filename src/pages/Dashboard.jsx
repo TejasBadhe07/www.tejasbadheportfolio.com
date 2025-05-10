@@ -81,6 +81,25 @@ const Dashboard = () => {
     projects: 0
   });
 
+  // Add contact section state
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    location: '',
+    social: {
+      linkedin: '',
+      github: '',
+      twitter: ''
+    },
+    settings: {
+      enableContactForm: true,
+      emailNotifications: true,
+      autoReply: false
+    },
+    autoReplyMessage: "Thank you for reaching out! I'll get back to you as soon as possible."
+  });
+
   useEffect(() => {
     // Check if user is authenticated
     const isAuthenticated = localStorage.getItem('isAuthenticated');
@@ -106,6 +125,26 @@ const Dashboard = () => {
           github: portfolioData.about.social?.github || '',
           twitter: portfolioData.about.social?.twitter || ''
         }
+      });
+    }
+
+    if (portfolioData?.contact) {
+      setContactForm({
+        name: portfolioData.contact.name || '',
+        email: portfolioData.contact.email || '',
+        phone: portfolioData.contact.phone || '',
+        location: portfolioData.contact.location || '',
+        social: {
+          linkedin: portfolioData.contact.social?.linkedin || '',
+          github: portfolioData.contact.social?.github || '',
+          twitter: portfolioData.contact.social?.twitter || ''
+        },
+        settings: {
+          enableContactForm: portfolioData.contact.settings?.enableContactForm ?? true,
+          emailNotifications: portfolioData.contact.settings?.emailNotifications ?? true,
+          autoReply: portfolioData.contact.settings?.autoReply ?? false
+        },
+        autoReplyMessage: portfolioData.contact.autoReplyMessage || "Thank you for reaching out! I'll get back to you as soon as possible."
       });
     }
   }, [navigate, location, portfolioData]);
@@ -166,7 +205,16 @@ const Dashboard = () => {
 
   const confirmSave = () => {
     if (pendingChanges) {
-      updatePortfolioSection('about', pendingChanges);
+      if (pendingChanges.type === 'delete') {
+        // Handle delete operation
+        const { section, id } = pendingChanges;
+        const updatedData = portfolioData[section].filter(item => item.id !== id);
+        updatePortfolioSection(section, updatedData);
+      } else if (pendingChanges.type === 'update') {
+        // Handle update operation
+        const { section, data } = pendingChanges;
+        updatePortfolioSection(section, data);
+      }
       setShowConfirmDialog(false);
       setPendingChanges(null);
     }
@@ -387,6 +435,45 @@ const Dashboard = () => {
       years: 0,
       projects: 0
     });
+  };
+
+  // Add contact section handlers
+  const handleContactInputChange = (e) => {
+    const { name, value } = e.target;
+    if (name.startsWith('social.')) {
+      const socialPlatform = name.split('.')[1];
+      setContactForm(prev => ({
+        ...prev,
+        social: {
+          ...prev.social,
+          [socialPlatform]: value
+        }
+      }));
+    } else {
+      setContactForm(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
+
+  const handleSettingToggle = (setting) => {
+    setContactForm(prev => ({
+      ...prev,
+      settings: {
+        ...prev.settings,
+        [setting]: !prev.settings[setting]
+      }
+    }));
+  };
+
+  const handleSaveContact = () => {
+    setPendingChanges({
+      type: 'update',
+      section: 'contact',
+      data: contactForm
+    });
+    setShowConfirmDialog(true);
   };
 
   const renderContent = () => {
@@ -1359,8 +1446,8 @@ const Dashboard = () => {
             <div className="section-header">
               <h2>Contact Information</h2>
               <div className="header-actions">
-                <button className="edit-button">
-                  <FaEdit /> Edit
+                <button className="save-button" onClick={handleSaveContact}>
+                  <FaSave /> Save Changes
                 </button>
               </div>
             </div>
@@ -1373,12 +1460,22 @@ const Dashboard = () => {
                 <div className="contact-form">
                   <div className="form-group">
                     <label>Full Name</label>
-                    <input type="text" defaultValue="Tejas Badhe" />
+                    <input 
+                      type="text" 
+                      name="name"
+                      value={contactForm.name}
+                      onChange={handleContactInputChange}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Email</label>
                     <div className="input-with-icon">
-                      <input type="email" defaultValue="contact@example.com" />
+                      <input 
+                        type="email" 
+                        name="email"
+                        value={contactForm.email}
+                        onChange={handleContactInputChange}
+                      />
                       <button className="icon-button" title="Copy">
                         <FaLink />
                       </button>
@@ -1387,7 +1484,12 @@ const Dashboard = () => {
                   <div className="form-group">
                     <label>Phone</label>
                     <div className="input-with-icon">
-                      <input type="tel" defaultValue="+1 234 567 890" />
+                      <input 
+                        type="tel" 
+                        name="phone"
+                        value={contactForm.phone}
+                        onChange={handleContactInputChange}
+                      />
                       <button className="icon-button" title="Copy">
                         <FaLink />
                       </button>
@@ -1395,7 +1497,12 @@ const Dashboard = () => {
                   </div>
                   <div className="form-group">
                     <label>Location</label>
-                    <input type="text" defaultValue="New York, USA" />
+                    <input 
+                      type="text" 
+                      name="location"
+                      value={contactForm.location}
+                      onChange={handleContactInputChange}
+                    />
                   </div>
                 </div>
               </div>
@@ -1412,7 +1519,12 @@ const Dashboard = () => {
                     <div className="social-info">
                       <label>LinkedIn</label>
                       <div className="input-with-icon">
-                        <input type="url" defaultValue="https://linkedin.com/in/yourprofile" />
+                        <input 
+                          type="url" 
+                          name="social.linkedin"
+                          value={contactForm.social.linkedin}
+                          onChange={handleContactInputChange}
+                        />
                         <button className="icon-button" title="Copy">
                           <FaLink />
                         </button>
@@ -1426,7 +1538,12 @@ const Dashboard = () => {
                     <div className="social-info">
                       <label>GitHub</label>
                       <div className="input-with-icon">
-                        <input type="url" defaultValue="https://github.com/yourusername" />
+                        <input 
+                          type="url" 
+                          name="social.github"
+                          value={contactForm.social.github}
+                          onChange={handleContactInputChange}
+                        />
                         <button className="icon-button" title="Copy">
                           <FaLink />
                         </button>
@@ -1440,7 +1557,12 @@ const Dashboard = () => {
                     <div className="social-info">
                       <label>Twitter</label>
                       <div className="input-with-icon">
-                        <input type="url" defaultValue="https://twitter.com/yourhandle" />
+                        <input 
+                          type="url" 
+                          name="social.twitter"
+                          value={contactForm.social.twitter}
+                          onChange={handleContactInputChange}
+                        />
                         <button className="icon-button" title="Copy">
                           <FaLink />
                         </button>
@@ -1459,7 +1581,11 @@ const Dashboard = () => {
                     <label className="switch-label">
                       <span>Enable Contact Form</span>
                       <div className="toggle-switch">
-                        <input type="checkbox" defaultChecked />
+                        <input 
+                          type="checkbox" 
+                          checked={contactForm.settings.enableContactForm}
+                          onChange={() => handleSettingToggle('enableContactForm')}
+                        />
                         <span className="slider"></span>
                       </div>
                     </label>
@@ -1468,7 +1594,11 @@ const Dashboard = () => {
                     <label className="switch-label">
                       <span>Email Notifications</span>
                       <div className="toggle-switch">
-                        <input type="checkbox" defaultChecked />
+                        <input 
+                          type="checkbox" 
+                          checked={contactForm.settings.emailNotifications}
+                          onChange={() => handleSettingToggle('emailNotifications')}
+                        />
                         <span className="slider"></span>
                       </div>
                     </label>
@@ -1477,7 +1607,11 @@ const Dashboard = () => {
                     <label className="switch-label">
                       <span>Auto-Reply</span>
                       <div className="toggle-switch">
-                        <input type="checkbox" />
+                        <input 
+                          type="checkbox" 
+                          checked={contactForm.settings.autoReply}
+                          onChange={() => handleSettingToggle('autoReply')}
+                        />
                         <span className="slider"></span>
                       </div>
                     </label>
@@ -1491,8 +1625,10 @@ const Dashboard = () => {
                 </div>
                 <div className="form-group">
                   <textarea 
+                    name="autoReplyMessage"
+                    value={contactForm.autoReplyMessage}
+                    onChange={handleContactInputChange}
                     placeholder="Enter your auto-reply message..."
-                    defaultValue="Thank you for reaching out! I'll get back to you as soon as possible."
                     rows="4"
                   />
                 </div>
