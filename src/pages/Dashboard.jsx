@@ -29,7 +29,8 @@ import {
   FaGraduationCap,
   FaCalendarAlt,
   FaMapMarkerAlt,
-  FaSearch
+  FaSearch,
+  FaClock
 } from 'react-icons/fa';
 import { usePortfolio } from '../context/PortfolioContext';
 import './dashboard.css';
@@ -41,7 +42,7 @@ const Dashboard = () => {
   const location = useLocation();
   const mainContentRef = useRef(null);
   const { section = 'overview' } = useParams();
-  const { portfolioData, updatePortfolioSection } = usePortfolio();
+  const { portfolioData, updatePortfolioSection, updatePortfolioItem } = usePortfolio();
   const [formData, setFormData] = useState({
     name: '',
     title: '',
@@ -70,6 +71,15 @@ const Dashboard = () => {
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
+  const [showSkillModal, setShowSkillModal] = useState(false);
+  const [editingSkill, setEditingSkill] = useState(null);
+  const [skillForm, setSkillForm] = useState({
+    category: '',
+    name: '',
+    level: 50,
+    years: 0,
+    projects: 0
+  });
 
   useEffect(() => {
     // Check if user is authenticated
@@ -303,6 +313,81 @@ const Dashboard = () => {
     { id: 2, action: 'Added New Project', time: '5 hours ago', icon: <FaPlus /> },
     { id: 3, action: 'Received New Comment', time: '1 day ago', icon: <FaComment /> },
   ];
+
+  const handleSkillInputChange = (e) => {
+    const { name, value } = e.target;
+    setSkillForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleAddSkill = () => {
+    setEditingSkill(null);
+    setSkillForm({
+      category: '',
+      name: '',
+      level: 50,
+      years: 0,
+      projects: 0
+    });
+    setShowSkillModal(true);
+  };
+
+  const handleEditSkill = (skill) => {
+    setEditingSkill(skill);
+    setSkillForm({
+      category: skill.category,
+      name: skill.name,
+      level: skill.level,
+      years: skill.years,
+      projects: skill.projects
+    });
+    setShowSkillModal(true);
+  };
+
+  const handleDeleteSkill = (skillId) => {
+    setPendingChanges({
+      type: 'delete',
+      section: 'skills',
+      id: skillId
+    });
+    setShowConfirmDialog(true);
+  };
+
+  const handleSaveSkill = () => {
+    if (!skillForm.category || !skillForm.name) {
+      return;
+    }
+
+    const skillData = {
+      ...skillForm,
+      level: parseInt(skillForm.level),
+      years: parseInt(skillForm.years),
+      projects: parseInt(skillForm.projects)
+    };
+
+    if (editingSkill) {
+      updatePortfolioItem('skills', editingSkill.id, skillData);
+    } else {
+      const newSkill = {
+        id: Date.now(),
+        ...skillData
+      };
+      const currentSkills = portfolioData.skills || [];
+      updatePortfolioSection('skills', [...currentSkills, newSkill]);
+    }
+
+    setShowSkillModal(false);
+    setEditingSkill(null);
+    setSkillForm({
+      category: '',
+      name: '',
+      level: 50,
+      years: 0,
+      projects: 0
+    });
+  };
 
   const renderContent = () => {
     switch (section) {
@@ -882,7 +967,7 @@ const Dashboard = () => {
             <div className="section-header">
               <h2>Skills</h2>
               <div className="header-actions">
-                <button className="add-button">
+                <button className="add-button" onClick={handleAddSkill}>
                   <FaPlus /> Add Skill
                 </button>
               </div>
@@ -890,140 +975,215 @@ const Dashboard = () => {
 
             <div className="skills-filters">
               <div className="search-box">
-                <input type="text" placeholder="Search skills..." />
+                <input 
+                  type="text" 
+                  placeholder="Search skills..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
                 <FaSearch />
               </div>
               <div className="filter-buttons">
-                <button className="filter-button active">All</button>
-                <button className="filter-button">Frontend</button>
-                <button className="filter-button">Backend</button>
-                <button className="filter-button">Tools</button>
+                <button 
+                  className={`filter-button ${activeFilter === 'all' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('all')}
+                >
+                  All
+                </button>
+                <button 
+                  className={`filter-button ${activeFilter === 'Frontend' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('Frontend')}
+                >
+                  Frontend
+                </button>
+                <button 
+                  className={`filter-button ${activeFilter === 'Backend' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('Backend')}
+                >
+                  Backend
+                </button>
+                <button 
+                  className={`filter-button ${activeFilter === 'Database' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('Database')}
+                >
+                  Database
+                </button>
+                <button 
+                  className={`filter-button ${activeFilter === 'DevOps' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('DevOps')}
+                >
+                  DevOps
+                </button>
+                <button 
+                  className={`filter-button ${activeFilter === 'Mobile' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('Mobile')}
+                >
+                  Mobile
+                </button>
               </div>
             </div>
 
-            <div className="skills-grid">
-              {[
-                {
-                  category: "Frontend",
-                  skills: [
-                    { name: "React", level: 90, years: 3, projects: 15 },
-                    { name: "JavaScript", level: 85, years: 4, projects: 20 },
-                    { name: "HTML/CSS", level: 95, years: 5, projects: 25 }
-                  ]
-                },
-                {
-                  category: "Backend",
-                  skills: [
-                    { name: "Node.js", level: 80, years: 2, projects: 10 },
-                    { name: "Python", level: 75, years: 2, projects: 8 },
-                    { name: "SQL", level: 85, years: 3, projects: 12 }
-                  ]
-                },
-                {
-                  category: "Tools",
-                  skills: [
-                    { name: "Git", level: 90, years: 3, projects: 20 },
-                    { name: "Docker", level: 70, years: 1, projects: 5 },
-                    { name: "AWS", level: 65, years: 1, projects: 4 }
-                  ]
-                }
-              ].map((category, categoryIndex) => (
-                <motion.div
-                  key={categoryIndex}
-                  className="skill-category"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: categoryIndex * 0.1 }}
-                >
-                  <h3 className="category-title">{category.category}</h3>
-                  <div className="category-skills">
-                    {category.skills.map((skill, skillIndex) => (
-                      <motion.div
-                        key={skillIndex}
-                        className="skill-card"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: skillIndex * 0.1 }}
-                      >
-                        <div className="skill-header">
-                          <div className="skill-title">
-                            <h4>{skill.name}</h4>
-                            <span className="skill-years">{skill.years} years</span>
+            <div className="skills-container">
+              {['Frontend', 'Backend', 'Database', 'DevOps', 'Mobile', 'Other'].map(category => {
+                const categorySkills = portfolioData.skills?.filter(skill => 
+                  skill.category === category &&
+                  (activeFilter === 'all' || activeFilter === category) &&
+                  (searchQuery === '' || 
+                    skill.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                ) || [];
+
+                if (categorySkills.length === 0 && activeFilter !== 'all') return null;
+
+                return (
+                  <div key={category} className="skill-category">
+                    <h3 className="category-title">{category}</h3>
+                    <div className="skills-grid">
+                      {categorySkills.map((skill) => (
+                        <motion.div
+                          key={skill.id}
+                          className="skill-card"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          whileHover={{ y: -5 }}
+                        >
+                          <div className="skill-header">
+                            <div className="skill-title">
+                              <h4>{skill.name}</h4>
+                              <span className="skill-category">{skill.category}</span>
+                            </div>
+                            <div className="skill-actions">
+                              <button 
+                                className="edit-button" 
+                                title="Edit"
+                                onClick={() => handleEditSkill(skill)}
+                              >
+                                <FaEdit />
+                              </button>
+                              <button 
+                                className="delete-button" 
+                                title="Delete"
+                                onClick={() => handleDeleteSkill(skill.id)}
+                              >
+                                <FaTimes />
+                              </button>
+                            </div>
                           </div>
-                          <div className="skill-actions">
-                            <button className="edit-button" title="Edit">
-                              <FaEdit />
-                            </button>
-                            <button className="delete-button" title="Delete">
-                              <FaTimes />
-                            </button>
+
+                          <div className="skill-progress">
+                            <div 
+                              className="progress-bar"
+                              style={{ width: `${skill.level}%` }}
+                            />
+                            <span className="progress-text">{skill.level}%</span>
                           </div>
-                        </div>
-                        <div className="skill-progress">
-                          <div className="progress-bar" style={{ width: `${skill.level}%` }}></div>
-                          <span className="progress-text">{skill.level}%</span>
-                        </div>
-                        <div className="skill-meta">
-                          <div className="meta-item">
-                            <FaProjectDiagram />
-                            <span>{skill.projects} projects</span>
+
+                          <div className="skill-meta">
+                            <div className="meta-item">
+                              <FaProjectDiagram />
+                              <span>{skill.projects} projects</span>
+                            </div>
+                            <div className="meta-item">
+                              <FaClock />
+                              <span>{skill.years} years</span>
+                            </div>
                           </div>
-                          <div className="meta-item">
-                            <FaAward />
-                            <span>Expert</span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
-                </motion.div>
-              ))}
+                );
+              })}
             </div>
 
-            {/* Add Skill Modal (Hidden by default) */}
-            <div className="modal" style={{ display: 'none' }}>
-              <div className="modal-content">
-                <h3>Add New Skill</h3>
-                <form className="skill-form">
-                  <div className="form-group">
-                    <label>Skill Name</label>
-                    <input type="text" placeholder="e.g., React" />
-                  </div>
-                  <div className="form-row">
+            {/* Skill Modal */}
+            {showSkillModal && (
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  <h3>{editingSkill ? 'Edit Skill' : 'Add New Skill'}</h3>
+                  <form className="skill-form" onSubmit={(e) => { e.preventDefault(); handleSaveSkill(); }}>
                     <div className="form-group">
                       <label>Category</label>
-                      <select>
-                        <option value="frontend">Frontend</option>
-                        <option value="backend">Backend</option>
-                        <option value="tools">Tools</option>
+                      <select 
+                        name="category"
+                        value={skillForm.category}
+                        onChange={handleSkillInputChange}
+                        required
+                      >
+                        <option value="">Select a category</option>
+                        <option value="Frontend">Frontend</option>
+                        <option value="Backend">Backend</option>
+                        <option value="Database">Database</option>
+                        <option value="DevOps">DevOps</option>
+                        <option value="Mobile">Mobile</option>
+                        <option value="Other">Other</option>
                       </select>
                     </div>
+
                     <div className="form-group">
-                      <label>Proficiency Level</label>
-                      <input type="range" min="0" max="100" defaultValue="50" />
+                      <label>Skill Name</label>
+                      <input 
+                        type="text" 
+                        name="name"
+                        value={skillForm.name}
+                        onChange={handleSkillInputChange}
+                        placeholder="e.g., React, Node.js" 
+                        required
+                      />
                     </div>
-                  </div>
-                  <div className="form-row">
+
                     <div className="form-group">
-                      <label>Years of Experience</label>
-                      <input type="number" min="0" placeholder="e.g., 2" />
+                      <label>Proficiency Level: {skillForm.level}%</label>
+                      <input 
+                        type="range" 
+                        name="level"
+                        min="0"
+                        max="100"
+                        value={skillForm.level}
+                        onChange={handleSkillInputChange}
+                      />
                     </div>
-                    <div className="form-group">
-                      <label>Projects Completed</label>
-                      <input type="number" min="0" placeholder="e.g., 10" />
+
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Years of Experience</label>
+                        <input 
+                          type="number" 
+                          name="years"
+                          min="0"
+                          value={skillForm.years}
+                          onChange={handleSkillInputChange}
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Projects Completed</label>
+                        <input 
+                          type="number" 
+                          name="projects"
+                          min="0"
+                          value={skillForm.projects}
+                          onChange={handleSkillInputChange}
+                          required
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="form-group">
-                    <label>Description</label>
-                    <textarea placeholder="Describe your expertise in this skill..." />
-                  </div>
-                  <div className="form-actions">
-                    <button type="button" className="cancel-button">Cancel</button>
-                    <button type="submit" className="save-button">Save Skill</button>
-                  </div>
-                </form>
+
+                    <div className="form-actions">
+                      <button 
+                        type="button" 
+                        className="cancel-button"
+                        onClick={() => setShowSkillModal(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button type="submit" className="save-button">
+                        {editingSkill ? 'Update Skill' : 'Add Skill'}
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         );
       case 'blog':
