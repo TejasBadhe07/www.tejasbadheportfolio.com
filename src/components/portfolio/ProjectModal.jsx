@@ -77,15 +77,15 @@ const ProjectModal = ({ project, onClose }) => {
                 <div className="project-meta">
                   <div className="meta-item">
                     <FaCalendarAlt />
-                    <span>{project.timeline.duration}</span>
+                    <span>{project.timeline?.duration || 'Duration not specified'}</span>
                   </div>
                   <div className="meta-item">
                     <FaUserTie />
-                    <span>{project.role}</span>
+                    <span>{project.role || 'Role not specified'}</span>
                   </div>
                   <div className="meta-item">
                     <FaUsersCog />
-                    <span>Team of {project.team.size}</span>
+                    <span>Team of {project.team?.size || 'N/A'}</span>
                   </div>
                 </div>
 
@@ -109,7 +109,7 @@ const ProjectModal = ({ project, onClose }) => {
                   <ul>
                     {project.challenges?.map((challenge, index) => (
                       <li key={index}>{challenge}</li>
-                    ))}
+                    )) || <li>No challenges documented</li>}
                   </ul>
                 </div>
                 <div className="solutions-column">
@@ -117,7 +117,7 @@ const ProjectModal = ({ project, onClose }) => {
                   <ul>
                     {project.solutions?.map((solution, index) => (
                       <li key={index}>{solution}</li>
-                    ))}
+                    )) || <li>No solutions documented</li>}
                   </ul>
                 </div>
               </div>
@@ -132,7 +132,7 @@ const ProjectModal = ({ project, onClose }) => {
                     <img src={screenshot.url} alt={screenshot.caption} />
                     <p>{screenshot.caption}</p>
                   </div>
-                ))}
+                )) || <p>No screenshots available</p>}
               </div>
             </div>
           )}
@@ -143,17 +143,17 @@ const ProjectModal = ({ project, onClose }) => {
                 <div className="impact-card">
                   <FaUsers />
                   <h4>Users Reached</h4>
-                  <p>{project.impact.users}</p>
+                  <p>{project.impact?.users || 'N/A'}</p>
                 </div>
                 <div className="impact-card">
                   <FaChartLine />
                   <h4>Efficiency Improvement</h4>
-                  <p>{project.impact.efficiency}</p>
+                  <p>{project.impact?.efficiency || 'N/A'}</p>
                 </div>
                 <div className="impact-card">
                   <FaSmile />
                   <h4>User Satisfaction</h4>
-                  <p>{project.impact.satisfaction}</p>
+                  <p>{project.impact?.satisfaction || 'N/A'}</p>
                 </div>
               </div>
             </div>
