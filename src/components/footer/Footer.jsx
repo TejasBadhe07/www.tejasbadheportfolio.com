@@ -8,8 +8,6 @@ import { FaGithub } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 const Footer = () => {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -20,16 +18,6 @@ const Footer = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (email) {
-      setSubscribed(true);
-      setEmail('');
-      // Here you would typically handle the newsletter subscription
-      setTimeout(() => setSubscribed(false), 3000);
-    }
-  };
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -65,36 +53,6 @@ const Footer = () => {
         <li><a href="#contact">Contact</a></li>
         <li><Link to="/dashboard" className="dashboard-link">Dashboard</Link></li>
       </ul>
-
-      <div className="newsletter-section">
-        <h3>Stay Updated</h3>
-        <form onSubmit={handleSubscribe} className="newsletter-form">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <motion.button
-            type="submit"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Subscribe
-          </motion.button>
-        </form>
-        {subscribed && (
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="success-message"
-          >
-            Thanks for subscribing!
-          </motion.p>
-        )}
-      </div>
 
       <div className='footer__socials'>
         <motion.a 
