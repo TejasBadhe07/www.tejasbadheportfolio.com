@@ -189,6 +189,26 @@ footer a {
     transform: translateY(-5px);
 }
 
+.football {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    z-index: 10;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.football svg {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.football circle {
+    transition: fill 0.3s ease;
+}
+
+.football:hover circle {
+    fill: var(--color-primary);
+}
+
 /* ==================================== MEDIA QUERIES (SMALL DEVICE) ===================================================== */
 @media screen and (max-width:600px) {
     footer {
@@ -278,6 +298,15 @@ footer a {
         width: 2.5rem;
         height: 2.5rem;
         font-size: 1.2rem;
+    }
+
+    .football {
+        top: 10px;
+    }
+    
+    .football svg {
+        width: 25px;
+        height: 25px;
     }
 }
 
