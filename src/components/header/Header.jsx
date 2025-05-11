@@ -27,8 +27,10 @@ const Header = () => {
         >
           <h5 className="header__subtitle">Hello I'm</h5>
           <h1 className="header__title">
-            <span className="highlight">{portfolioData?.about?.name || 'Tejas'}</span>
-            <span className="wave">👋</span>
+            <div className="name-container">
+              <span className="wave">👋</span>
+              <span className="highlight">{portfolioData?.about?.name || 'Tejas'}</span>
+            </div>
           </h1>
           <h5 className="header__subtitle text-light">{portfolioData?.about?.title || 'Software Developer'}</h5>
           <p className="header__description">
