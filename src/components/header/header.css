@@ -210,23 +210,45 @@ header {
     right: -2.3rem;
     bottom: 5rem;
     transform: rotate(90deg);
-    font-weight: 300;
+    font-weight: 500;
     font-size: 0.9rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--color-primary);
-    transition: var(--transition);
+    gap: 0.8rem;
+    color: var(--color-white);
+    transition: all 0.3s ease;
     text-decoration: none;
+    background: var(--color-bg-variant);
+    padding: 0.8rem 1.5rem;
+    border-radius: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--color-primary-variant);
 }
 
 .scroll__down:hover {
-    color: var(--color-white);
+    color: var(--color-primary);
+    background: var(--color-bg);
+    transform: rotate(90deg) translateY(-5px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    border-color: var(--color-primary);
+}
+
+.scroll__down span {
+    letter-spacing: 0.5px;
+    font-size: 0.95rem;
 }
 
 .scroll__icon {
     font-size: 1.2rem;
+    color: var(--color-primary);
     animation: bounce 2s infinite;
+    transition: all 0.3s ease;
+}
+
+.scroll__down:hover .scroll__icon {
+    transform: translateY(3px);
+    animation: none;
 }
 
 @keyframes wave {
@@ -241,9 +263,15 @@ header {
 }
 
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-10px); }
-    60% { transform: translateY(-5px); }
+    0%, 20%, 50%, 80%, 100% { 
+        transform: translateY(0); 
+    }
+    40% { 
+        transform: translateY(-8px); 
+    }
+    60% { 
+        transform: translateY(-4px); 
+    }
 }
 
 @keyframes float {

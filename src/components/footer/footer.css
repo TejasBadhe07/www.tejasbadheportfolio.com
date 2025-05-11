@@ -316,3 +316,15 @@ footer a {
         margin: 2rem 2rem;
     }
 }
+
+/* Update media queries for football animation */
+@media screen and (max-width: 600px) {
+    .football {
+        top: 10px;
+    }
+    
+    .football svg {
+        width: 25px;
+        height: 25px;
+    }
+}
