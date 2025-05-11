@@ -70,6 +70,21 @@ header {
     animation: wave 2.5s infinite;
     transform-origin: 70% 70%;
     margin-left: 0.5rem;
+    font-size: 1.2em;
+    position: relative;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.header__title .wave::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, var(--color-primary) 0%, transparent 70%);
+    opacity: 0;
+    animation: glow 2.5s infinite;
+    border-radius: 50%;
+    z-index: -1;
 }
 
 .header__description {
@@ -252,14 +267,14 @@ header {
 }
 
 @keyframes wave {
-    0% { transform: rotate(0deg); }
-    10% { transform: rotate(14deg); }
-    20% { transform: rotate(-8deg); }
-    30% { transform: rotate(14deg); }
-    40% { transform: rotate(-4deg); }
-    50% { transform: rotate(10deg); }
-    60% { transform: rotate(0deg); }
-    100% { transform: rotate(0deg); }
+    0% { transform: rotate(0deg) scale(1); }
+    10% { transform: rotate(14deg) scale(1.1); }
+    20% { transform: rotate(-8deg) scale(1); }
+    30% { transform: rotate(14deg) scale(1.1); }
+    40% { transform: rotate(-4deg) scale(1); }
+    50% { transform: rotate(10deg) scale(1.1); }
+    60% { transform: rotate(0deg) scale(1); }
+    100% { transform: rotate(0deg) scale(1); }
 }
 
 @keyframes bounce {
@@ -284,6 +299,12 @@ header {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+}
+
+@keyframes glow {
+    0% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 0.2; transform: scale(1.2); }
+    100% { opacity: 0; transform: scale(0.8); }
 }
 
 /* ==================================== MEDIA QUERIES (MEDIUM DEVICE) ===================================================== */
