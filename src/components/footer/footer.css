@@ -328,3 +328,18 @@ footer a {
         height: 25px;
     }
 }
+/* Keep the back-to-top button clear of the bottom navigation bar */
+.back-to-top {
+    background: var(--gradient-primary);
+    color: var(--color-on-primary);
+}
+
+.back-to-top:hover {
+    background: var(--gradient-primary);
+}
+
+@media screen and (max-width: 600px) {
+    .back-to-top {
+        bottom: 5rem;
+    }
+}

@@ -64,7 +64,7 @@ const Footer = () => {
       <FootballAnimation />
 
       <motion.a 
-        href="#" 
+        href="#home" 
         className='footer__logo'
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -76,9 +76,9 @@ const Footer = () => {
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#experience">Experience</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#portfolio">Projects</a></li>
+        <li><a href="#blog">Blog</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><Link to="/dashboard" className="dashboard-link">Dashboard</Link></li>
       </ul>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import './blog.css'
 import { motion } from 'framer-motion'
 import { FaCalendarAlt, FaTags, FaArrowRight, FaHome } from 'react-icons/fa'
@@ -11,6 +11,8 @@ const Blog = () => {
   const [error, setError] = useState(null)
   const [activeTag, setActiveTag] = useState('All')
   const navigate = useNavigate()
+  // The "Back to Home" button only makes sense on the standalone /blog page
+  const isBlogPage = useLocation().pathname.startsWith('/blog')
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -40,21 +42,23 @@ const Blog = () => {
     return (
       <section id='blog'>
         <div className="container blog__container">
-          <motion.div 
-            className="blog__navigation"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <motion.button
-              className="btn btn-primary"
-              onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          {isBlogPage && (
+            <motion.div 
+              className="blog__navigation"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
             >
-              <FaHome /> Back to Home
-            </motion.button>
-          </motion.div>
+              <motion.button
+                className="btn btn-primary"
+                onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaHome /> Back to Home
+              </motion.button>
+            </motion.div>
+          )}
 
           <h5>My Technical Articles</h5>
           <h2>Blog</h2>
@@ -70,21 +74,23 @@ const Blog = () => {
     return (
       <section id='blog'>
         <div className="container blog__container">
-          <motion.div 
-            className="blog__navigation"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <motion.button
-              className="btn btn-primary"
-              onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          {isBlogPage && (
+            <motion.div 
+              className="blog__navigation"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
             >
-              <FaHome /> Back to Home
-            </motion.button>
-          </motion.div>
+              <motion.button
+                className="btn btn-primary"
+                onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaHome /> Back to Home
+              </motion.button>
+            </motion.div>
+          )}
 
           <h5>My Technical Articles</h5>
           <h2>Blog</h2>
@@ -100,6 +106,38 @@ const Blog = () => {
     return (
       <section id='blog'>
         <div className="container blog__container">
+          {isBlogPage && (
+            <motion.div 
+              className="blog__navigation"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.button
+                className="btn btn-primary"
+                onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaHome /> Back to Home
+              </motion.button>
+            </motion.div>
+          )}
+
+          <h5>My Technical Articles</h5>
+          <h2>Blog</h2>
+          <div className="container blog__container">
+            <p>No blog posts found.</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  return (
+    <section id='blog'>
+      <div className="container blog__container">
+        {isBlogPage && (
           <motion.div 
             className="blog__navigation"
             initial={{ opacity: 0 }}
@@ -115,35 +153,7 @@ const Blog = () => {
               <FaHome /> Back to Home
             </motion.button>
           </motion.div>
-
-          <h5>My Technical Articles</h5>
-          <h2>Blog</h2>
-          <div className="container blog__container">
-            <p>No blog posts found.</p>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  return (
-    <section id='blog'>
-      <div className="container blog__container">
-        <motion.div 
-          className="blog__navigation"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          <motion.button
-            className="btn btn-primary"
-            onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <FaHome /> Back to Home
-          </motion.button>
-        </motion.div>
+        )}
 
         <h5>My Technical Articles</h5>
         <h2>Blog</h2>

@@ -1,73 +1,71 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import './header.css'
 import CTA from './CTA'
 import ME from '../../assets/images/Photo1.jpeg'
 import { FaArrowDown } from 'react-icons/fa'
 import { motion } from 'framer-motion'
-import TopSocials from './TopSocials'
+import HeaderSocials from './HeaderSocials'
 import { usePortfolio } from '../../context/PortfolioContext'
 
-const Header = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const { portfolioData } = usePortfolio();
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 24 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }
+})
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+const Header = () => {
+  const { portfolioData } = usePortfolio();
+  const title = portfolioData?.about?.title || 'Software Developer'
 
   return (
-    <header>
-      <TopSocials />
+    <header id='home'>
       <div className="container header__container">
-        <motion.div 
-          className="header__content"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h5 className="header__subtitle">Hello I'm</h5>
-          <h1 className="header__title">
-            <div className="name-container">
-              <span className="wave">👋</span>
-              <span className="highlight">{portfolioData?.about?.name || 'Tejas'}</span>
-            </div>
-          </h1>
-          <h5 className="header__subtitle text-light">{portfolioData?.about?.title || 'Software Developer'}</h5>
-          <p className="header__description">
+        <div className="header__content">
+          <motion.p className="header__eyebrow" {...fadeUp(0)}>
+            <span className="header__wave" aria-hidden="true">👋</span>
+            Hello, I'm
+          </motion.p>
+          <motion.h1 className="header__title" {...fadeUp(0.1)}>
+            <span className="text-gradient">{portfolioData?.about?.name || 'Tejas'}</span>
+          </motion.h1>
+          <motion.h2 className="header__role" {...fadeUp(0.2)}>
+            {title} <span className="header__role-sep">·</span> AI/ML Enthusiast
+          </motion.h2>
+          <motion.p className="header__description" {...fadeUp(0.3)}>
             {portfolioData?.about?.bio || 'Passionate about creating innovative solutions with modern web technologies'}
-          </p>
-          <CTA />
-        </motion.div>
+          </motion.p>
+          <motion.div {...fadeUp(0.4)}>
+            <CTA />
+          </motion.div>
+          <motion.div {...fadeUp(0.5)}>
+            <HeaderSocials />
+          </motion.div>
+        </div>
 
-        <motion.div 
+        <motion.div
           className="me"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: isVisible ? 1 : 0, scale: isVisible ? 1 : 0.8 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
+          <div className="me__glow" aria-hidden="true" />
           <div className="me__image-container">
-            <img src={ME} alt="me" />
-            <div className="me__overlay">
-              <div className="me__overlay-content">
-                <span>{portfolioData?.about?.title || 'Software Developer'}</span>
-                <span>AI/ML Enthusiast</span>
-              </div>
-            </div>
+            <img src={ME} alt="Tejas Badhe" />
           </div>
-          <div className="me__background"></div>
         </motion.div>
-
-        <motion.a 
-          href="#contact" 
-          className="scroll__down"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : 20 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <span>Scroll Down</span>
-          <FaArrowDown className="scroll__icon" />
-        </motion.a>
       </div>
+
+      <motion.a
+        href="#about"
+        className="scroll__down"
+        aria-label="Scroll to About section"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.8 }}
+      >
+        <span>Scroll</span>
+        <FaArrowDown className="scroll__icon" />
+      </motion.a>
     </header>
   )
 }

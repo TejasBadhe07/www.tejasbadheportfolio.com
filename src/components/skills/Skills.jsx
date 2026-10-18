@@ -1,5 +1,6 @@
 import React from 'react'
 import './skills.css'
+import { motion } from 'framer-motion'
 import { FaReact, FaNodeJs, FaPython, FaDatabase } from 'react-icons/fa'
 import { SiTensorflow, SiOpencv, SiJavascript, SiHtml5, SiCss3, SiMongodb, SiExpress } from 'react-icons/si'
 
@@ -49,14 +50,16 @@ const Skills = () => {
                   <div className='skill__header'>
                     <span className='skill__icon'>{skill.icon}</span>
                     <h4>{skill.name}</h4>
+                    <span className='skill__percentage'>{skill.level}%</span>
                   </div>
                   <div className='skill__bar'>
-                    <div 
+                    <motion.div
                       className='skill__progress'
-                      style={{ width: `${skill.level}%` }}
-                    >
-                      <span className='skill__percentage'>{skill.level}%</span>
-                    </div>
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${skill.level}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                    />
                   </div>
                 </div>
               ))}

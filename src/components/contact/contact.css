@@ -259,30 +259,12 @@ input::placeholder, textarea::placeholder {
     opacity: 0.7;
 }
 
-.btn-primary {
-    background: var(--color-primary);
-    color: var(--color-bg);
-    padding: 0.9rem 2rem;
-    border-radius: 0.6rem;
-    cursor: pointer;
-    transition: var(--transition);
-    border: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    width: fit-content;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
+.contact__form .btn-primary {
+    margin-top: 0.5rem;
+    padding: 0.85rem 1.8rem;
 }
 
-.btn-primary:hover {
-    background: var(--color-primary-variant);
-    transform: translateY(-2px);
-}
-
-.btn-primary:disabled {
-    background: var(--color-primary-variant);
+.contact__form .btn-primary:disabled {
     cursor: not-allowed;
     transform: none;
     opacity: 0.7;
@@ -367,9 +349,8 @@ input::placeholder, textarea::placeholder {
         padding: 0.8rem;
     }
 
-    .btn-primary {
+    .contact__form .btn-primary {
         width: 100%;
-        justify-content: center;
     }
 
     .notification {
@@ -377,5 +358,71 @@ input::placeholder, textarea::placeholder {
         right: 1rem;
         left: 1rem;
         text-align: center;
+    }
+}
+
+/* ==================================== REFRESH ===================================================== */
+.contact__option {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+        "icon title link"
+        "icon sub link";
+    column-gap: 1rem;
+    row-gap: 0.1rem;
+    padding: 1.1rem 1.25rem;
+    background: var(--color-bg-variant);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+.contact__option:hover {
+    background: var(--color-bg-variant);
+    transform: translateY(-3px);
+}
+
+.contact__option-icon {
+    grid-area: icon;
+    min-width: 3rem;
+    height: 3rem;
+    padding: 0.75rem;
+    background: var(--color-primary-variant);
+}
+
+.contact__option h4 {
+    grid-area: title;
+    margin: 0;
+    font-size: 1rem;
+    justify-self: start;
+}
+
+.contact__option h5 {
+    grid-area: sub;
+    margin: 0;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.contact__option a {
+    grid-area: link;
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    background: var(--color-primary-variant);
+}
+
+@media screen and (max-width: 600px) {
+    .contact__option {
+        grid-template-columns: auto 1fr;
+        grid-template-areas:
+            "icon title"
+            "icon sub"
+            "icon link";
+    }
+
+    .contact__option a {
+        justify-self: start;
+        margin-top: 0.5rem;
     }
 }

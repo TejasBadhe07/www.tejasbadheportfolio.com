@@ -1,54 +1,66 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './ProjectModal.css'
 import { FaGithub, FaExternalLinkAlt, FaUsers, FaChartLine, FaSmile, FaCalendarAlt, FaUserTie, FaUsersCog } from 'react-icons/fa'
 
 const ProjectModal = ({ project, onClose }) => {
   const [activeTab, setActiveTab] = useState('overview')
+
+  // Close on Escape and stop the page behind from scrolling
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = previousOverflow
+    }
+  }, [onClose])
+
   if (!project) return null
+
+  // Only show tabs that have something to show
+  const tabs = [
+    { id: 'overview', label: 'Overview', show: true },
+    { id: 'challenges', label: 'Challenges & Solutions', show: project.challenges?.length || project.solutions?.length },
+    { id: 'gallery', label: 'Gallery', show: project.screenshots?.length },
+    { id: 'impact', label: 'Impact', show: project.impact }
+  ].filter(tab => tab.show)
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>×</button>
+      <div className="modal-content" role="dialog" aria-modal="true" aria-label={project.title} onClick={e => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose} aria-label="Close" autoFocus>×</button>
         
         <div className="modal-header">
           <h2>{project.title}</h2>
           <span className="project-category">{project.category}</span>
         </div>
 
-        <div className="modal-tabs">
-          <button 
-            className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`}
-            onClick={() => setActiveTab('overview')}
-          >
-            Overview
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'challenges' ? 'active' : ''}`}
-            onClick={() => setActiveTab('challenges')}
-          >
-            Challenges & Solutions
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'gallery' ? 'active' : ''}`}
-            onClick={() => setActiveTab('gallery')}
-          >
-            Gallery
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'impact' ? 'active' : ''}`}
-            onClick={() => setActiveTab('impact')}
-          >
-            Impact
-          </button>
-        </div>
+        {tabs.length > 1 && (
+          <div className="modal-tabs" role="tablist">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                role="tab"
+                aria-selected={activeTab === tab.id}
+                className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="modal-body">
           {activeTab === 'overview' && (
             <>
-              <div className="modal-image">
-                <img src={project.image} alt={project.title} />
-              </div>
+              {project.image && (
+                <div className="modal-image">
+                  <img src={project.image} alt={project.title} />
+                </div>
+              )}
 
               <div className="modal-details">
                 <div className="project-description">
@@ -65,37 +77,51 @@ const ProjectModal = ({ project, onClose }) => {
                   </div>
                 </div>
 
-                <div className="project-features">
-                  <h3>Key Features</h3>
-                  <ul>
-                    {project.features?.map((feature, index) => (
-                      <li key={index}>{feature}</li>
-                    ))}
-                  </ul>
-                </div>
+                {project.features?.length > 0 && (
+                  <div className="project-features">
+                    <h3>Key Features</h3>
+                    <ul>
+                      {project.features.map((feature, index) => (
+                        <li key={index}>{feature}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-                <div className="project-meta">
-                  <div className="meta-item">
-                    <FaCalendarAlt />
-                    <span>{project.timeline?.duration || 'Duration not specified'}</span>
+                {(project.timeline?.duration || project.role || project.team?.size) && (
+                  <div className="project-meta">
+                    {project.timeline?.duration && (
+                      <div className="meta-item">
+                        <FaCalendarAlt />
+                        <span>{project.timeline.duration}</span>
+                      </div>
+                    )}
+                    {project.role && (
+                      <div className="meta-item">
+                        <FaUserTie />
+                        <span>{project.role}</span>
+                      </div>
+                    )}
+                    {project.team?.size && (
+                      <div className="meta-item">
+                        <FaUsersCog />
+                        <span>Team of {project.team.size}</span>
+                      </div>
+                    )}
                   </div>
-                  <div className="meta-item">
-                    <FaUserTie />
-                    <span>{project.role || 'Role not specified'}</span>
-                  </div>
-                  <div className="meta-item">
-                    <FaUsersCog />
-                    <span>Team of {project.team?.size || 'N/A'}</span>
-                  </div>
-                </div>
+                )}
 
                 <div className="project-links">
-                  <a href={project.github} className="btn" target="_blank" rel="noopener noreferrer">
-                    <FaGithub /> View on GitHub
-                  </a>
-                  <a href={project.demo} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                    <FaExternalLinkAlt /> Live Demo
-                  </a>
+                  {project.github && (
+                    <a href={project.github} className="btn" target="_blank" rel="noopener noreferrer">
+                      <FaGithub /> View on GitHub
+                    </a>
+                  )}
+                  {project.demo && (
+                    <a href={project.demo} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                      <FaExternalLinkAlt /> Live Demo
+                    </a>
+                  )}
                 </div>
               </div>
             </>

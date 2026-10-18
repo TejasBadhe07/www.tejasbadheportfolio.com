@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
 import './portfolio.css'
 import ProjectModal from './ProjectModal'
 import IMG1 from '../../assets/images/portfolio_images/library_management_system.jpg'
@@ -12,6 +14,29 @@ import IMG6 from '../../assets/images/portfolio_images/quizmaster.png'
 
 /* ==================================== PORTFOLIO PROJEC AND ITS LINKS IN THIS CLASS ========================================== */
 const data = [
+  // Newest project, shown as the large card at the top. The code is private, so there is no public link yet.
+  {
+    id: 7,
+    isNew: true,
+    status: 'In progress',
+    image: null,
+    title: 'HostTerrace: OTA Platform',
+    description: 'One shared platform for companies that run several holiday properties. Each company gets its own booking website, an admin area for villas, bookings and team, and a channel manager that keeps prices and open or closed nights in sync with Airbnb and MakeMyTrip through Beds24.',
+    technologies: ['Next.js', 'React', 'TypeScript', 'PostgreSQL', 'Supabase', 'Playwright'],
+    category: 'Web Development',
+    github: '',
+    demo: '',
+    features: [
+      'Separate website and admin area for every company',
+      'Channel manager that syncs prices and availability with Airbnb and MakeMyTrip (via Beds24)',
+      'Each company only sees its own villas, bookings, team and history',
+      'Passwordless email sign-in links',
+      'Per-company branding: logo, colour and font pairing',
+      'Platform admin area to approve new company sign-ups'
+    ],
+    role: 'Full Stack Developer'
+  },
+
   {
     id: 1,
     image: IMG1,
@@ -157,25 +182,59 @@ const data = [
   }
 ]
 
-const categories = ['All', 'Web Development', 'Computer Vision', 'Machine Learning', 'Deep Learning']
+
+const categories = ['All', ...new Set(data.map(project => project.category))]
+
+const ProjectImage = ({ image, title }) => (
+  image
+    ? <img src={image} alt={title} loading='lazy' />
+    : <div className='portfolio__item-placeholder' aria-hidden='true'>{title.split(':')[0]}</div>
+)
+
+const ProjectLinks = ({ github, demo }) => (
+  <div className='portfolio__item-cta'>
+    {github && (
+      <a href={github} className='btn' target='_blank' rel='noopener noreferrer' onClick={e => e.stopPropagation()}>
+        <FaGithub /> Code
+      </a>
+    )}
+    {demo && (
+      <a href={demo} className='btn btn-primary' target='_blank' rel='noopener noreferrer' onClick={e => e.stopPropagation()}>
+        <FaExternalLinkAlt /> Live Demo
+      </a>
+    )}
+  </div>
+)
 
 const Portfolio = () => {
   const [activeCategory, setActiveCategory] = useState('All')
   const [selectedProject, setSelectedProject] = useState(null)
 
-  const filteredProjects = activeCategory === 'All' 
-    ? data 
-    : data.filter(project => project.category === activeCategory)
+  const featured = data.find(project => project.isNew)
+  const showFeatured = featured && (activeCategory === 'All' || activeCategory === featured.category)
+
+  const filteredProjects = data.filter(project =>
+    !project.isNew && (activeCategory === 'All' || project.category === activeCategory)
+  )
+
+  const openOnKey = (project) => (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      setSelectedProject(project)
+    }
+  }
 
   return (
     <section id='portfolio'>
       <h5>My Recent Work</h5>
-      <h2>Portfolio</h2>
+      <h2>Projects</h2>
 
-      <div className='portfolio__filters'>
+      <div className='portfolio__filters' role='tablist' aria-label='Filter projects'>
         {categories.map(category => (
           <button
             key={category}
+            role='tab'
+            aria-selected={activeCategory === category}
             className={`filter-btn ${activeCategory === category ? 'active' : ''}`}
             onClick={() => setActiveCategory(category)}
           >
@@ -184,33 +243,89 @@ const Portfolio = () => {
         ))}
       </div>
 
-      <div className='container portfolio__container'>
-        {filteredProjects.map(({id, image, title, description, technologies, github, demo}) => {
-          return (
-            <article 
-              key={id} 
-              className='portfolio__item'
-              onClick={() => setSelectedProject(data.find(project => project.id === id))}
-            >
-              <div className='portfolio__item-image'>
-                <img src={image} alt={title} />
+      <div className='container'>
+        {showFeatured && (
+          <motion.article
+            className='portfolio__featured'
+            onClick={() => setSelectedProject(featured)}
+            onKeyDown={openOnKey(featured)}
+            tabIndex={0}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className='portfolio__featured-image'>
+              <ProjectImage image={featured.image} title={featured.title} />
+            </div>
+            <div className='portfolio__featured-content'>
+              <div className='portfolio__badges'>
+                <span className='portfolio__badge'>New</span>
+                {featured.status && <span className='portfolio__status'>{featured.status}</span>}
               </div>
-              <div className='portfolio__item-content'>
-                <h3>{title}</h3>
-                <p className='portfolio__item-description'>{description}</p>
-                <div className='portfolio__item-technologies'>
-                  {technologies.map((tech, index) => (
-                    <span key={index} className='technology-tag'>{tech}</span>
-                  ))}
-                </div>
-                <div className='portfolio__item-cta'>
-                  <a href={github} className='btn' target='_blank' rel='noopener noreferrer' onClick={e => e.stopPropagation()}>GitHub</a>
-                  <a href={demo} className='btn btn-primary' target='_blank' rel='noopener noreferrer' onClick={e => e.stopPropagation()}>Live Demo</a>
-                </div>
+              <span className='portfolio__category'>{featured.category}</span>
+              <h3>{featured.title}</h3>
+              <p>{featured.description}</p>
+              <div className='portfolio__item-technologies'>
+                {featured.technologies.map(tech => (
+                  <span key={tech} className='technology-tag'>{tech}</span>
+                ))}
               </div>
-            </article>
-          )
-        })}
+              <div className='portfolio__item-cta'>
+                <button type='button' className='btn btn-primary'>View details</button>
+                {featured.github && (
+                  <a href={featured.github} className='btn' target='_blank' rel='noopener noreferrer' onClick={e => e.stopPropagation()}>
+                    <FaGithub /> Code
+                  </a>
+                )}
+                {featured.demo && (
+                  <a href={featured.demo} className='btn' target='_blank' rel='noopener noreferrer' onClick={e => e.stopPropagation()}>
+                    <FaExternalLinkAlt /> Live Demo
+                  </a>
+                )}
+              </div>
+            </div>
+          </motion.article>
+        )}
+
+        <motion.div layout className='portfolio__container'>
+          <AnimatePresence mode='popLayout'>
+            {filteredProjects.map((project) => {
+              const { id, image, title, description, technologies, category, github, demo } = project
+              return (
+                <motion.article
+                  layout
+                  key={id}
+                  className='portfolio__item'
+                  onClick={() => setSelectedProject(project)}
+                  onKeyDown={openOnKey(project)}
+                  tabIndex={0}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ duration: 0.45 }}
+                >
+                  <div className='portfolio__item-image'>
+                    <ProjectImage image={image} title={title} />
+                    <span className='portfolio__item-view'>View details</span>
+                  </div>
+                  <div className='portfolio__item-content'>
+                    <span className='portfolio__category'>{category}</span>
+                    <h3>{title}</h3>
+                    <p className='portfolio__item-description'>{description}</p>
+                    <div className='portfolio__item-technologies'>
+                      {technologies.map(tech => (
+                        <span key={tech} className='technology-tag'>{tech}</span>
+                      ))}
+                    </div>
+                    <ProjectLinks github={github} demo={demo} />
+                  </div>
+                </motion.article>
+              )
+            })}
+          </AnimatePresence>
+        </motion.div>
       </div>
 
       {selectedProject && (
@@ -222,6 +337,5 @@ const Portfolio = () => {
     </section>
   )
 }
-/* <a href={demo} className='btn btn-primary' target='_blank'>Live Demo</a> =========== Add this line under Github for Live Demo*/
 
 export default Portfolio
